@@ -1,18 +1,37 @@
 ---
 import { getCollection } from "astro:content";
-import SampleLayout from "../../layouts/SampleLayout.astro";
 
-import News from "../../components/News.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const news = (await getCollection("noticias")).sort(
+import { SectionHeader, ContentCard } from "../../components/blog";
+
+const news = (await getCollection("noticias", ({ data }) => !data.draft)).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
-<SampleLayout>
-    <h1>Notícias Semanais</h1>
+<BaseLayout pageTitle="Todas as Notícias">
+    <SectionHeader title="Todas as Notícias" />
 
-    <section>
-        {news.map((singleNews) => <News singleNews={singleNews} />)}
+    <section class="content-gallery">
+        {news.length === 0 && <p>Nenhuma notícia encontrada.</p>}
+        {
+            news.map((singleNews, index) => (
+                <ContentCard
+                    item={singleNews}
+                    categoryLabel="Notícia"
+                    categoryColor="#e52e71"
+                    index={index + 1}
+                />
+            ))
+        }
     </section>
-</SampleLayout>
+</BaseLayout>
+
+<style>
+    .content-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+</style>

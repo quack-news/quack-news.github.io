@@ -1,0 +1,91 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import { DateTime } from "luxon";
+
+interface Props {
+  singleNews: CollectionEntry<"noticias">;
+}
+
+const { singleNews } = Astro.props;
+const { image, title, description, pubDate, author, tags } = singleNews.data;
+
+const dt = DateTime.fromJSDate(pubDate, { zone: "America/Sao_Paulo" });
+
+const formattedDate = dt.setLocale("pt-BR").toFormat("dd MMM yyyy"); // Resultado: 26 ago 2025
+const formattedTime = dt.toFormat("HH:mm"); // ex: 16:11
+---
+
+<article class="news-item">
+  <div class="news-item__image_wrapper">
+    <figure class="news-item__figure">
+      <Image
+        src={image.src}
+        alt={image.alt}
+        loading="lazy"
+        decoding="async"
+        class="news-item__image"
+      />
+      <figcaption class="news-item__caption">{image.caption}</figcaption>
+    </figure>
+  </div>
+  <div class="news-item__text">
+    <h2>
+      <a href={`/noticias/${singleNews.id}/`}>{title}</a>
+    </h2>
+    <time datetime={pubDate.toISOString()}
+      >{formattedDate} às {formattedTime}</time
+    >
+  </div>
+</article>
+
+<style>
+  .news-item {
+    display: flex;
+    align-items: center; /* Alinha verticalmente a imagem e o texto */
+    gap: 0.5rem; /* Espaçamento de 8px entre a imagem e o texto */
+    width: 100%; /* Ocupa toda a largura disponível no celular */
+  }
+
+  .news-item__figure {
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0; /* Impede que a imagem encolha se o texto for grande */
+  }
+
+  /* Controlamos a imagem para não ficar gigante no celular */
+  .news-item__image {
+    width: 100px; /* Um bom tamanho para a imagem no layout de lista */
+    height: auto;
+  }
+
+  .news-item__text h2 {
+    display: block;
+    font-size: 100%;
+    margin: 0; /* Remove margens para um alinhamento mais preciso */
+  }
+
+  .news-item__text time {
+    font-size: 0.7rem;
+    color: var(--color-muted);
+  }
+
+  /* =================================== */
+  /* ESTILOS PARA TELAS MAIORES (WEB)    */
+  /* =================================== */
+  @media (min-width: 768px) {
+    /* 768px é um breakpoint comum para tablets e desktops. Ajuste se precisar. */
+    .news-item {
+      flex-direction: column; /* Volta a empilhar os itens verticalmente */
+      align-items: flex-start; /* Alinha os itens à esquerda */
+      width: 240px; /* Restaura a largura fixa do card */
+      height: 100%;
+    }
+
+    /* Restaura o tamanho original da imagem na versão web */
+    .news-item__image {
+      width: 240px;
+      height: 135px;
+    }
+  }
+</style>

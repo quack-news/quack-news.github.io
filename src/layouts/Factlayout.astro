@@ -1,0 +1,50 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout pageTitle={"Fato Aleatório!"}>
+    <div class="fact-container">
+        <h1 class="fact-title">{frontmatter.title}</h1>
+        {
+            frontmatter.source && (
+                <a
+                    href={frontmatter.source}
+                    target="_blank"
+                    class="fact-source"
+                >
+                    Ver Fonte
+                </a>
+            )
+        }
+    </div>
+</BaseLayout>
+
+<style>
+    .fact-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 60vh;
+        text-align: center;
+        padding: 2rem;
+    }
+    .fact-title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 8vw, 4rem);
+        color: #fff;
+        background: linear-gradient(90deg, #ff8a00, #e52e71);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 12px 12px 0px #3d3522;
+        transform: rotate(-3deg);
+    }
+    .fact-source {
+        margin-top: 2rem;
+        font-family: var(--font-text);
+        font-weight: bold;
+        color: #3d3522;
+    }
+</style>

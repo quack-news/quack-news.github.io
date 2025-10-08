@@ -1,11 +1,8 @@
 ---
 import type { CollectionEntry } from "astro:content";
-
-import SampleLayout from "./SampleLayout.astro";
-import ContentMetatada from "../components/ContentMetatada.astro";
-
+import BaseLayout from "./BaseLayout.astro";
+import { NewsMetadata } from "../components/news";
 import { Image } from "astro:assets";
-import Content from "../components/Content.astro";
 
 type News = CollectionEntry<"noticias">;
 type Frontmatter = News["data"];
@@ -15,49 +12,157 @@ interface Props {
 }
 
 const { frontmatter } = Astro.props;
-const { title, image } = frontmatter;
+const { title, description, image } = frontmatter;
 ---
 
-<SampleLayout>
-    <div class="content-header">
-        <h1 class="news-title">{title}</h1>
-        <Image src={image.src} alt={image.alt} class="featured-image" />
-    </div>
+<BaseLayout>
+    <header class="article-header">
+        <div class="image-container">
+            <Image src={image.src} alt={image.alt} class="hero-image" />
+        </div>
 
-    <ContentMetatada type="noticias" {frontmatter} />
-    <!-- <Content /> -->
+        <div class="text-container">
+            <span class="accent-line"></span>
+            <h1 class="hero-title">{title}</h1>
+            <p class="hero-dek">{description}</p>
+        </div>
+    </header>
+
+    <NewsMetadata {frontmatter} />
 
     <article class="news-article">
         <slot />
     </article>
-</SampleLayout>
+</BaseLayout>
 
 <style>
-    .news-article {
-        text-align: justify;
-        line-height: 1.6;
-        font-size: 1.1em;
-        max-width: 75ch;
-        margin: 0 auto;
+    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+
+    .article-header {
+        display: grid;
+        grid-template-columns: 1fr; /* Coluna única em mobile */
+        gap: 2rem;
+        align-items: center;
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 0 1rem;
     }
 
-    .content-header {
-        margin-bottom: 2rem;
+    /* Layout de duas colunas para telas maiores */
+    @media (min-width: 768px) {
+        .article-header {
+            grid-template-columns: 1fr 1.2fr; /* Coluna de texto um pouco maior */
+        }
+    }
+
+    .image-container {
+        animation: slideInLeft 1s ease-out both;
+    }
+    .hero-image {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4/3;
+        object-fit: cover;
+        border-radius: 16px;
+        box-shadow: 12px 12px 0px #ffd700;
+        border: 2px solid #3d3522;
+    }
+
+    .text-container {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        justify-content: center;
     }
 
-    .news-title {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        text-align: center;
+    /* 2. Linha decorativa que "se desenha" na tela */
+    .accent-line {
+        display: block;
+        width: 80px;
+        height: 5px;
+        background: linear-gradient(90deg, #ff8a00, #e52e71);
+        border-radius: 5px;
+        margin-bottom: 1.5rem;
+        animation: draw-line 1s 0.3s ease-out both;
     }
 
-    .featured-image {
-        width: 100%;
-        max-height: 150px;
-        object-fit: cover;
-        border-radius: 8px;
+    /* 3. Tipografia refinada para o título */
+    .hero-title {
+        font-family: "Poppins", sans-serif;
+        font-weight: 800; /* Mais forte e impactante */
+        font-size: clamp(2.2rem, 6vw, 3.5rem); /* Grande, mas controlado */
+        color: #3d3522; /* Cor escura para legibilidade */
+        line-height: 1.1;
+        margin: 0;
+        animation: slideInUp 0.8s 0.5s ease-out both;
+    }
+
+    .hero-dek {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.1rem;
+        color: #555;
+        margin: 1rem 0 0 0;
+        animation: slideInUp 0.8s 0.7s ease-out both;
+    }
+
+    .news-article {
+        font-family: "Inter", sans-serif;
+        text-align: justify;
+        line-height: 1.8;
+        font-size: 1.1rem;
+        max-width: 75ch;
+        margin: 0 auto;
+        padding: 0 1rem;
+        animation: fadeInUp 1s 1s ease-out both;
+    }
+
+    .news-article > :global(p:first-of-type::first-letter) {
+        font-family: "Poppins", sans-serif;
+        font-weight: 800;
+        font-size: 4em;
+        float: left;
+        margin-right: 0.1em;
+        line-height: 0.8;
+        color: #3d3522;
+    }
+
+    /* 4. Animações coreografadas */
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @keyframes draw-line {
+        from {
+            transform: scaleX(0);
+        }
+        to {
+            transform: scaleX(1);
+        }
     }
 </style>

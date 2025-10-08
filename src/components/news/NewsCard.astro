@@ -1,0 +1,108 @@
+---
+import { DateTime } from "luxon";
+
+export interface Props {
+    newsItem: any;
+    index: number;
+}
+const { newsItem, index } = Astro.props;
+
+const timeSince = DateTime.fromJSDate(newsItem.data.pubDate)
+    .setLocale("pt-BR")
+    .toRelative();
+---
+
+<li class="news-item" style={`animation-delay: ${index * 100}ms;`}>
+    <article>
+        <a href={`/noticias/${newsItem.slug}/`} class="news-link">
+            <div class="news-header">
+                <h3>{newsItem.data.title}</h3>
+                <span class="arrow-icon">→</span>
+            </div>
+            <time datetime={newsItem.data.pubDate.toISOString()}>
+                {timeSince}
+            </time>
+            <p>{newsItem.data.description}</p>
+        </a>
+    </article>
+</li>
+
+<style>
+    .news-item {
+        opacity: 0;
+        animation: slideInUp 0.5s ease-out forwards;
+    }
+
+    .news-link {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        padding: 1rem;
+        border-radius: 12px;
+        transition:
+            transform 0.2s ease-out,
+            background-color 0.2s ease-out;
+        border-bottom: 1px solid #eee;
+    }
+
+    .news-link:hover {
+        transform: translateY(-4px);
+        background-color: #fdfcfa;
+        border-color: transparent;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .news-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .news-link h3 {
+        font-family: var(--font-sans);
+        font-weight: 700;
+        font-size: 1rem;
+        margin: 0 0 0.25rem 0;
+    }
+
+    .arrow-icon {
+        font-size: 1.2rem;
+        color: #ff8a00;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition:
+            opacity 0.3s ease,
+            transform 0.3s ease;
+    }
+
+    .news-link:hover .arrow-icon {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .news-link time {
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        color: #999;
+        text-transform: capitalize;
+    }
+
+    .news-link p {
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        margin: 0.5rem 0 0 0;
+        color: #555;
+    }
+
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

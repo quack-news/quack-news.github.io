@@ -1,24 +1,23 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import { render } from "astro:content";
-
 import NewsLayout from "../../layouts/NewsLayout.astro";
 
 export async function getStaticPaths() {
-	const news = await getCollection("noticias");
-
-	return news.map((_news) => ({
-		params: { slug: _news.id },
-		props: _news,
-	}));
+    const newsEntries = await getCollection("noticias");
+    return newsEntries.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
 }
 
-type Props = CollectionEntry<"noticias">;
+interface Props {
+    entry: CollectionEntry<"noticias">;
+}
 
-const _news = Astro.props;
-const { Content } = await render(_news);
+const { entry } = Astro.props;
+const { Content } = await entry.render();
 ---
 
-<NewsLayout frontmatter={_news.data}>
-	<Content />
+<NewsLayout frontmatter={entry.data}>
+    <Content />
 </NewsLayout>

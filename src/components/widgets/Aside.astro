@@ -1,0 +1,35 @@
+---
+interface Props {
+  direction: "left" | "right";
+}
+
+const { direction } = Astro.props;
+---
+
+<aside class:list={["sidebar-container", `side-${direction}`]}>
+  <slot />
+</aside>
+
+<style>
+  .sidebar-container {
+    padding: 1.5rem;
+    height: fit-content;
+  }
+  .sidebar-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0.5rem;
+  }
+
+  .sidebar-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-container li {
+    margin-bottom: 0.75rem;
+  }
+</style>

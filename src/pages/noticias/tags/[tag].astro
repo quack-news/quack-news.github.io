@@ -1,38 +1,121 @@
 ---
-import { getCollection } from "astro:content";
-import SampleLayout from "../../../layouts/SampleLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+import { ContentCard, SectionHeader } from "../../../components/blog";
 
 export async function getStaticPaths() {
-    const allNews = await getCollection("noticias");
+    const allNews = await getCollection("noticias", ({ data }) => !data.draft);
 
     const uniqueTags = [
-        ...new Set(allNews.map((news: any) => news.data.tags).flat()),
+        ...new Set(allNews.map((news) => news.data.tags).flat()),
     ];
 
     return uniqueTags.map((tag) => {
-        const filteredNews = allNews.filter((news: any) =>
+        const filteredNews = allNews.filter((news) =>
             news.data.tags.includes(tag),
         );
         return {
             params: { tag },
-            props: { news: filteredNews },
+            props: { news: filteredNews, allTags: uniqueTags },
         };
     });
 }
 
+interface Props {
+    news: CollectionEntry<"noticias">[];
+    allTags: string[];
+}
+
 const { tag } = Astro.params;
-const { news } = Astro.props;
+const { news, allTags } = Astro.props;
 ---
 
-<SampleLayout title={`Notícias - ${tag}`}>
-    <p>Notícias com a tag <b>{tag}</b></p>
-    <ul>
+<BaseLayout pageTitle={`Notícias sobre #${tag}`}>
+    <SectionHeader title={`Explorando a Tag #${tag}`} />
+
+    <nav class="tag-cloud" aria-label="Navegar por outras tags">
+        <p>Ver outras tags:</p>
+        <div class="tags-list">
+            {
+                allTags.map((otherTag) => (
+                    <a
+                        href={`/noticias/tags/${otherTag}/`}
+                        class:list={["tag-link", { active: otherTag === tag }]}
+                    >
+                        {otherTag}
+                    </a>
+                ))
+            }
+        </div>
+    </nav>
+
+    <section class="content-gallery">
         {
-            news.map((news) => (
-                <li>
-                    <a href={`/noticias/${news.id}/`}>{news.data.title}</a>
-                </li>
+            news.map((newsItem) => (
+                <ContentCard
+                    item={newsItem}
+                    categoryLabel="Notícia"
+                    categoryColor="#e52e71"
+                />
             ))
         }
-    </ul>
-</SampleLayout>
+    </section>
+</BaseLayout>
+
+<style>
+    .tag-cloud {
+        max-width: 1100px;
+        margin: 0 auto 2rem auto;
+        padding: 1rem;
+        background-color: #f9f6ef;
+        border-radius: 12px;
+    }
+
+    .tag-cloud p {
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        margin: 0 0 1rem 0;
+        color: #3d3522;
+    }
+
+    .tags-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .tag-link {
+        display: inline-block;
+        background-color: #fff;
+        color: #3d3522;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        text-decoration: none;
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-size: 0.9rem;
+        border: 2px solid #ddd;
+        transition: all 0.2s ease-out;
+    }
+    .tag-link:hover {
+        transform: translateY(-2px);
+        border-color: #3d3522;
+        background-color: #ffd700;
+    }
+
+    .tag-link.active {
+        background: linear-gradient(90deg, #ff8a00, #e52e71);
+        color: white;
+        border-color: transparent;
+        font-weight: 700;
+    }
+
+    .content-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+</style>

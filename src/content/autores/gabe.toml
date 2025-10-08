@@ -1,0 +1,8 @@
+name = "Gabe"
+avatar = "./avatars/gabe.jpg"
+bio = "chefe de departamento do Quack News."
+
+[socials]
+twitter = "https://x.com/im_gxbe"
+instagram = "https://www.instagram.com/im_gxbe/"
+last_fm = "https://www.last.fm/pt/user/im_gabe"

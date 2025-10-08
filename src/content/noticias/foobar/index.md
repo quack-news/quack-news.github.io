@@ -1,12 +1,12 @@
 ---
 title: 'Foobar'
-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi non tortor sit amet leo gravida tincidunt ut aliquam erat. Mauris consequat malesuada lorem id commodo. Sed et consequat dolor'
+description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi non tortor sit amet leo gravida tincidunt ut aliquam erat. consequat dolor'
 pubDate: 2025-06-10 18:53
 author: 'gabe'
 category: "notícia"
 tags: ["patinhas"]
 image: { 
-    src: "./ecolaliaa.png",
+    src: "./ecolalia.png",
     alt: "ecolalia"
 }
 ---

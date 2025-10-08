@@ -1,0 +1,282 @@
+---
+export interface Ingredient {
+    amount?: number;
+    unit?: string;
+    name: string;
+}
+export interface Props {
+    ingredients: Ingredient[];
+    baseServings: number;
+}
+const { ingredients, baseServings } = Astro.props;
+---
+
+<div class="ingredients-container">
+    <div class="controls">
+        <h3>Ingredientes</h3>
+        <div class="servings-control">
+            <span>Porções:</span>
+            <div class="multiplier-options">
+                <div class="slider-highlight"></div>
+                <input
+                    type="radio"
+                    id="half"
+                    name="multiplier"
+                    value="0.5"
+                /><label for="half">½</label>
+                <input
+                    type="radio"
+                    id="standard"
+                    name="multiplier"
+                    value="1"
+                    checked
+                /><label for="standard">1x</label>
+                <input
+                    type="radio"
+                    id="double"
+                    name="multiplier"
+                    value="2"
+                /><label for="double">2x</label>
+            </div>
+            <span id="servings-display">{baseServings} porções</span>
+        </div>
+    </div>
+    <ul class="ingredients-list">
+        {
+            ingredients.map((ing, i) => (
+                <li data-base-amount={ing.amount}>
+                    <input
+                        type="checkbox"
+                        id={`ing-${i}`}
+                        class="ingredient-checkbox"
+                    />
+                    <label for={`ing-${i}`}>
+                        <span class="amount">{ing.amount}</span>
+                        <span class="unit">{ing.unit}</span>
+                        <span class="name">{ing.name}</span>
+                    </label>
+                </li>
+            ))
+        }
+    </ul>
+</div>
+
+<script>
+    const container = document.querySelector(".ingredients-container");
+
+    if (container) {
+        const multiplierOptions = container.querySelector(
+            ".multiplier-options",
+        ) as HTMLElement;
+        const sliderHighlight = container.querySelector(
+            ".slider-highlight",
+        ) as HTMLElement;
+        const multiplierRadios = container.querySelectorAll(
+            'input[name="multiplier"]',
+        );
+        const servingsDisplay = container.querySelector(
+            "#servings-display",
+        ) as HTMLElement;
+        const ingredientsList = container.querySelectorAll(
+            ".ingredients-list li",
+        );
+        const baseServings = parseFloat(servingsDisplay.textContent || "0");
+
+        function formatAmount(amount: number): string {
+            if (amount === 0.25) return "¼";
+            if (amount === 0.5) return "½";
+            if (amount === 0.75) return "¾";
+            return Number(amount.toFixed(2)).toString();
+        }
+
+        function updateSliderPosition() {
+            if (!container) return;
+
+            const checkedRadio = container.querySelector(
+                'input[name="multiplier"]:checked',
+            ) as HTMLInputElement;
+            if (!checkedRadio) return;
+
+            const activeLabel = container.querySelector(
+                `label[for="${checkedRadio.id}"]`,
+            ) as HTMLElement;
+            if (!activeLabel || !multiplierOptions || !sliderHighlight) return;
+
+            const optionsRect = multiplierOptions.getBoundingClientRect();
+            const labelRect = activeLabel.getBoundingClientRect();
+
+            const leftOffset = labelRect.left - optionsRect.left;
+
+            sliderHighlight.style.width = `${labelRect.width}px`;
+            sliderHighlight.style.left = `${leftOffset}px`;
+            sliderHighlight.style.opacity = "1";
+        }
+
+        function updateIngredients() {
+            if (!container) return;
+
+            const multiplierInput = container.querySelector(
+                'input[name="multiplier"]:checked',
+            ) as HTMLInputElement;
+            const multiplier = parseFloat(multiplierInput.value);
+
+            servingsDisplay.textContent = `${baseServings * multiplier} porções`;
+
+            ingredientsList.forEach((item) => {
+                const amountEl = item.querySelector(".amount") as HTMLElement;
+                const baseAmount = (item as HTMLElement).dataset.baseAmount;
+
+                if (baseAmount && amountEl) {
+                    const newAmount = parseFloat(baseAmount) * multiplier;
+                    amountEl.textContent = formatAmount(newAmount);
+                }
+            });
+            updateSliderPosition();
+        }
+
+        multiplierRadios.forEach((radio) =>
+            radio.addEventListener("change", updateIngredients),
+        );
+
+        window.addEventListener("load", updateSliderPosition);
+        window.addEventListener("resize", updateSliderPosition);
+
+        setTimeout(updateSliderPosition, 50);
+    }
+</script>
+
+<style>
+    .ingredients-container {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        font-family: var(--font-sans);
+    }
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+    }
+    .controls h3 {
+        font-family: var(--font-display);
+        margin: 0;
+    }
+    .servings-control {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .servings-control span {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #3d3522;
+    }
+    .multiplier-options {
+        display: flex;
+        background: #eee;
+        border-radius: 20px;
+        padding: 4px;
+        position: relative;
+    }
+
+    .slider-highlight {
+        position: absolute;
+        top: 4px;
+        height: calc(100% - 8px);
+        background: #ffd700;
+        border-radius: 16px;
+        transition:
+            left 0.3s cubic-bezier(0.65, 0, 0.35, 1),
+            width 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+        z-index: 0;
+        opacity: 0;
+    }
+
+    .multiplier-options input {
+        display: none;
+    }
+    .multiplier-options label {
+        padding: 0.3rem 1rem;
+        border-radius: 18px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: color 0.3s ease-in-out;
+        position: relative;
+        z-index: 1;
+        user-select: none;
+    }
+    .multiplier-options input:checked + label {
+        color: #3d3522;
+    }
+
+    .ingredients-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .ingredients-list li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        border-bottom: 1px dashed #eee;
+        padding-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
+    .ingredients-list li:last-child {
+        border-bottom: none;
+    }
+    .ingredient-checkbox {
+        appearance: none;
+        background-color: #fff;
+        margin-right: 1rem;
+        font: inherit;
+        color: currentColor;
+        width: 1.15em;
+        height: 1.15em;
+        border: 0.15em solid currentColor;
+        border-radius: 0.25em;
+        transform: translateY(-0.075em);
+        display: grid;
+        place-content: center;
+        cursor: pointer;
+        transition: transform 0.1s ease-in-out;
+    }
+    .ingredient-checkbox::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        transform: scale(0);
+        transition: 120ms transform ease-in-out;
+        box-shadow: inset 1em 1em var(--cor-principal, #e52e71);
+        transform-origin: center;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+    .ingredient-checkbox:checked::before {
+        transform: scale(1.2);
+    }
+    .ingredient-checkbox:hover {
+        transform: translateY(-0.075em) scale(1.1);
+    }
+    .ingredients-list label {
+        display: flex;
+        gap: 0.4rem;
+        cursor: pointer;
+    }
+    .ingredients-list input:checked + label {
+        text-decoration: line-through;
+        color: #999;
+    }
+    .amount {
+        font-weight: 700;
+    }
+    .unit {
+        color: #888;
+        font-style: italic;
+    }
+    .name {
+        color: #333;
+    }
+</style>

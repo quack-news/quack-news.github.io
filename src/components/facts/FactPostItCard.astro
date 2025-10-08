@@ -1,0 +1,51 @@
+---
+export interface Props {
+    item: any;
+}
+const { item } = Astro.props;
+const url = `/fatos-aleatorios/${item.slug}/`;
+---
+
+<a href={url} class="post-it-card">
+    <p>{item.data.title}</p>
+</a>
+
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap");
+
+    .post-it-card {
+        display: block;
+        padding: 1.5rem;
+        width: 250px;
+        height: 250px;
+        font-family: "Gochi Hand", cursive;
+        font-size: 1.5rem;
+        text-decoration: none;
+        color: #3d3522;
+        background: #ffd700;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.15);
+        transition:
+            transform 0.2s ease-out,
+            box-shadow 0.2s ease-out,
+            z-index 0s 0.2s;
+    }
+
+    .post-it-card:hover {
+        transform: scale(1.1) rotate(0deg) !important;
+        box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+    }
+
+    :global(.post-it-gallery > a:nth-child(4n + 1)) {
+        transform: rotate(2deg);
+    }
+    :global(.post-it-gallery > a:nth-child(4n + 2)) {
+        transform: rotate(-3deg);
+    }
+    :global(.post-it-gallery > a:nth-child(4n + 3)) {
+        transform: rotate(4deg);
+    }
+    :global(.post-it-gallery > a:nth-child(4n + 4)) {
+        transform: rotate(-2deg);
+    }
+</style>

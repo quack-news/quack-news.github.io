@@ -1,0 +1,72 @@
+---
+import { Navigation } from "../layout";
+---
+
+<header class="main-head">
+  <div class="header-content">
+    <h1>
+      <a href="/" class="header-link">Quack News</a>
+    </h1>
+
+    <Navigation />
+  </div>
+</header>
+<style>
+  .main-head {
+    background-color: #ffd700;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    overflow: hidden;
+    border-bottom: 2px solid #3d3522;
+  }
+  .header-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .main-head h1 {
+    margin: 0;
+    animation: fadeInZoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    text-align: left;
+  }
+
+  .header-link {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 8vw, 2.5rem);
+    color: #3d3522;
+    text-decoration: none;
+    text-shadow: 2px 2px 0px #ffa500;
+    transition: transform 0.3s ease;
+    display: inline-block;
+  }
+  .main-head:hover .header-link {
+    animation: wiggle 0.5s ease-in-out;
+  }
+
+  @keyframes fadeInZoom {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(0);
+    }
+    25% {
+      transform: rotate(-3deg);
+    }
+    75% {
+      transform: rotate(3deg);
+    }
+  }
+</style>

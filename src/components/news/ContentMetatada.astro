@@ -1,0 +1,125 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { DateTime } from "luxon";
+
+function formatDate(date: Date) {
+    return DateTime.fromJSDate(date)
+        .setLocale("pt-BR")
+        .toLocaleString(DateTime.DATE_FULL);
+}
+
+type AnyEntry = CollectionEntry<"noticias" | "midias" | "receitas">;
+type Frontmatter = AnyEntry["data"];
+
+interface Props {
+    frontmatter: Frontmatter;
+}
+
+const { frontmatter } = Astro.props;
+const collectionType = (frontmatter as any).category
+    ? "noticias"
+    : (frontmatter as any).type
+      ? "midias"
+      : "receitas";
+---
+
+<aside class="metadata">
+    <div class="info-group">
+        <div class="metadata-item author-item">
+            ✍️
+            <span>
+                Escrito por <a href={`/autor/${frontmatter.author.id}/`}
+                    >{frontmatter.author.id}</a
+                >
+            </span>
+        </div>
+        <div class="metadata-item">
+            🗓️
+            <time datetime={frontmatter.pubDate.toISOString()}>
+                {formatDate(frontmatter.pubDate)}
+            </time>
+        </div>
+        {
+            "updatedDate" in frontmatter && frontmatter.updatedDate && (
+                <div class="metadata-item">
+                    🕒
+                    <span>
+                        Atualizado
+                        <time datetime={frontmatter.updatedDate.toISOString()}>
+                            {DateTime.fromJSDate(frontmatter.updatedDate)
+                                .setLocale("pt-BR")
+                                .toRelative()}
+                        </time>
+                    </span>
+                </div>
+            )
+        }
+    </div>
+
+    <div class="tags-group">
+        {
+            frontmatter.tags.map((tag: string) => (
+                <a href={`/${collectionType}/tags/${tag}/`} class="tag-link">
+                    {tag}
+                </a>
+            ))
+        }
+    </div>
+</aside>
+
+<style>
+    .metadata {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1rem 0;
+        margin: 0 auto 2rem auto;
+        max-width: 75ch; /* Mesma largura do artigo para alinhamento */
+        border-top: 2px solid #f0f0f0;
+        border-bottom: 2px solid #f0f0f0;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .info-group,
+    .tags-group {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .metadata-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #555;
+    }
+    .author-item a {
+        font-weight: 700;
+        color: #3d3522;
+        text-decoration: none;
+    }
+
+    .tag-link {
+        display: inline-block;
+        background-color: #ffd700; /* Nosso amarelo! */
+        color: #3d3522;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.8rem;
+        border: 2px solid #3d3522;
+        box-shadow: 3px 3px 0px #3d3522;
+        transition:
+            transform 0.2s ease-out,
+            box-shadow 0.2s ease-out;
+    }
+    .tag-link:hover {
+        transform: translateY(-3px) translateX(-3px);
+        box-shadow: 6px 6px 0px #e52e71; /* Efeito hover divertido! */
+    }
+</style>

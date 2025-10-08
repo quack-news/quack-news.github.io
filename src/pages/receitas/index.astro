@@ -1,16 +1,40 @@
 ---
 import { getCollection } from "astro:content";
-import SampleLayout from "../../layouts/SampleLayout.astro";
-import Recipe from "../../components/Recipe.astro";
 
-const recipes = (await getCollection("receitas")).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+import { SectionHeader, ContentCard } from "../../components/blog";
+
+const recipes = (
+    await getCollection("receitas", ({ data }) => !data.draft)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<SampleLayout>
-    <section>
-        {recipes.length === 0 && <p>Nenhuma receita encontrada.</p>}
-        {recipes.map((recipe) => <Recipe recipe={recipe} />)}
+<BaseLayout pageTitle="Nossas Receitas">
+    <SectionHeader title="Delícias do Quack!" />
+
+    <section class="content-gallery">
+        {
+            recipes.length === 0 && (
+                <p>Nenhuma receita encontrada. Que tal cozinhar uma hoje?</p>
+            )
+        }
+        {
+            recipes.map((recipe) => (
+                <ContentCard
+                    item={recipe}
+                    categoryLabel="Receita"
+                    categoryColor="#2e9de5"
+                />
+            ))
+        }
     </section>
-</SampleLayout>
+</BaseLayout>
+
+<style>
+    .content-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+</style>

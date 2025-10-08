@@ -1,0 +1,27 @@
+---
+import "../styles/normalize.css";
+import "../styles/global.css";
+
+import { Head, Header, Footer } from "../components/layout";
+import { WeeklyColumn } from "../components/widgets";
+import { NewsColumn } from "../components/news";
+---
+
+<html lang="pt-br">
+    <Head />
+
+    <body>
+        <div class="wrapper">
+            <Header />
+            <div class="main-content-grid">
+                <main class="content">
+                    <slot />
+                </main>
+                <WeeklyColumn />
+                <NewsColumn />
+            </div>
+
+            <Footer />
+        </div>
+    </body>
+</html>

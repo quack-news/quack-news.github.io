@@ -4,9 +4,9 @@ description: 'casos contagiosos de ecolalia e gripe assombram o grupo'
 pubDate: 2025-06-10 18:53
 author: 'gabe'
 category: "notícia"
-tags: ["patinhas"]
+tags: ["Doença", "Patinhas"]
 image: { 
-    src: "./ecolalia.png",
+    src: "./ecolalia.webp",
     alt: "ecolalia"
 }
 ---

@@ -1,0 +1,26 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import FactLayout from "../../layouts/Factlayout.astro";
+
+export async function getStaticPaths() {
+    const factEntries = await getCollection(
+        "fatos-aleatorios",
+        ({ data }) => !data.draft,
+    );
+    return factEntries.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+interface Props {
+    entry: CollectionEntry<"fatos-aleatorios">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<FactLayout frontmatter={entry.data}>
+    <Content />
+</FactLayout>

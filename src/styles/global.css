@@ -1,65 +1,55 @@
-@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Open+Sans:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
-.main-head {
-  grid-area: header;
+:root {
+    --font-display: "Fredoka One", cursive;
+    --font-sans: "Poppins", sans-serif;
+    --font-text: "Inter", sans-serif;
 }
 
-.content {
-  grid-area: content;
+.main-head {
+    grid-area: header;
 }
 
 .main-nav {
-  grid-area: nav;
+    grid-area: nav;
+}
+
+.content {
+    grid-area: content;
 }
 
 .side-left {
-  grid-area: side-left;
+    grid-area: side-left;
 }
 
 .side-right {
-  grid-area: side-right;
-}
-
-.ad {
-  grid-area: ad;
+    grid-area: side-right;
 }
 
 .main-footer {
-  grid-area: footer;
+    grid-area: footer;
 }
 
 .wrapper {
-  display: grid;
-  grid-template-areas:
-    "header"
-    "nav"
-    "content"
-    "side-left"
-    "side-right"
-    "footer";
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-@media (min-width: 500px) {
-  .wrapper {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "header"
-      "nav"
-      "content"
-      "side-left"
-      "side-right"
-      "footer";
-  }
+.main-content-grid {
+    display: block;
+    width: 100%;
 }
 
 @media (min-width: 700px) {
-  .wrapper {
-    grid-template-columns: 2fr 5fr 2fr;
-    grid-template-areas:
-      "header  header header"
-      "nav nav nav"
-      "side-left content side-right"
-      "side-left content side-right"
-      "footer footer  footer";
-  }
+    .main-content-grid {
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+        grid-template-areas: "side-left content side-right";
+        gap: 1.5rem;
+    }
 }

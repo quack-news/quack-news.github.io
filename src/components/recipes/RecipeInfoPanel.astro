@@ -1,0 +1,71 @@
+---
+export interface Props {
+    prepTime: number;
+    cookTime: number;
+    servings: number;
+    difficulty: "Fácil" | "Médio" | "Difícil";
+}
+
+const { prepTime, cookTime, servings, difficulty } = Astro.props;
+
+const totalTime = prepTime + cookTime;
+---
+
+<div class="info-panel">
+    <div class="info-item">
+        <span class="icon">⏱️</span>
+        <span class="label">Tempo Total</span>
+        <span class="value">{totalTime} min</span>
+        <small>Preparo: {prepTime}m</small>
+        <small>Cozimento: {prepTime}m</small>
+    </div>
+
+    <div class="info-item">
+        <span class="icon">👥</span>
+        <span class="label">Rendimento</span>
+        <span class="value">{servings} porções</span>
+    </div>
+
+    <div class="info-item">
+        <span class="icon">⭐</span>
+        <span class="label">Dificuldade</span>
+        <span class="value">{difficulty}</span>
+    </div>
+</div>
+
+<style>
+    .info-panel {
+        display: flex;
+        justify-content: space-around;
+        background: #f9f6ef;
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 2rem 0;
+        font-family: var(--font-sans);
+    }
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .info-item .icon {
+        font-size: 1.5rem;
+    }
+    .info-item .label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #777;
+        text-transform: uppercase;
+        margin-top: 0.5rem;
+    }
+    .info-item .value {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #3d3522;
+    }
+    .info-item small {
+        font-size: 0.75rem;
+        color: #999;
+    }
+</style>

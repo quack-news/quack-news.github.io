@@ -1,0 +1,83 @@
+---
+import { Image } from "astro:assets";
+import fakeAd from "../../assets/fake_ad_0.jpg";
+---
+
+<a href="fake-ad/" class="ad-link">
+    <div class="ad-image-container">
+        <Image
+            src={fakeAd}
+            alt="Clique para ver mais fotos de cachorros"
+            width={300}
+            height={200}
+            class="ad-image"
+        />
+    </div>
+
+    <div class="ad-content">
+        <p class="ad-title">
+            Você não vai acreditar no que ele fez com essa técnica.
+        </p>
+    </div>
+
+    <span class="ad-banner">Ver Mais!</span>
+</a>
+
+<style>
+    .ad-link {
+        display: block;
+        position: relative;
+        overflow: hidden;
+
+        text-decoration: none;
+        color: #3d3522;
+
+        background-color: #fff;
+
+        box-shadow: 6px 6px 0px #3d3522;
+
+        transition:
+            transform 0.2s ease-out,
+            box-shadow 0.2s ease-out;
+    }
+
+    .ad-link:hover {
+        transform: translateY(-6px) translateX(-6px);
+        box-shadow: 12px 12px 0px #ffd700;
+    }
+
+    .ad-image-container {
+        overflow: hidden;
+    }
+
+    .ad-image {
+        display: block;
+        width: 100%;
+        height: auto;
+        transition: transform 0.4s ease;
+    }
+
+    .ad-link:hover .ad-image {
+        transform: scale(1.1);
+    }
+    .ad-content {
+        padding: 1rem;
+    }
+    .ad-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin: 0;
+    }
+    .ad-banner {
+        position: absolute;
+        bottom: 0.5rem;
+        right: 0.5rem;
+        background: #ffd700;
+        color: #3d3522;
+        padding: 0.3em 0.8em;
+        border-radius: 8px;
+        font-size: 0.9em;
+        font-weight: 700;
+        box-shadow: 2px 2px 0px #3d3522;
+    }
+</style>
