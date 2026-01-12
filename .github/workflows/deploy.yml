@@ -1,13 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Dispara o workflow a cada push na branch main
   push:
-    branches: [ main ]
-  # Permite rodar manualmente na aba Actions
+    branches: [main]
   workflow_dispatch:
 
-# Permissões necessárias para o deploy
 permissions:
   contents: read
   pages: write
@@ -19,10 +16,9 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
-      
+
       - name: Install, build, and upload your site
         uses: withastro/action@v3
-        # O action detecta automaticamente pnpm/npm/yarn baseado no lockfile
 
   deploy:
     needs: build
