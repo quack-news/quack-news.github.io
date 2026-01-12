@@ -12,7 +12,7 @@ collections:
     label: "Notícias"
     folder: "src/content/noticias"
     create: true
-    slug: "{{slug}}/index"
+    slug: "{{slug}}"
     media_folder: "" 
     public_folder: "" 
     path: "{{slug}}/index"
@@ -73,7 +73,7 @@ collections:
     label: "Mídias"
     folder: "src/content/midias"
     create: true
-    slug: "{{slug}}/index"
+    slug: "{{slug}}"
     media_folder: "" 
     public_folder: "" 
     path: "{{slug}}/index"
