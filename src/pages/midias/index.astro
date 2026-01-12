@@ -10,8 +10,8 @@ const media = (await getCollection("midias", ({ data }) => !data.draft)).sort(
 );
 ---
 
-<BaseLayout pageTitle="Mundo da Mídia">
-    <SectionHeader title="Mundo da Mídia" />
+<BaseLayout pageTitle="Filmes, Séries e curtas">
+    <SectionHeader title="Filmes, Séries e curtas!" />
 
     <section class="content-gallery">
         {media.length === 0 && <p>Nenhum conteúdo de mídia encontrado.</p>}

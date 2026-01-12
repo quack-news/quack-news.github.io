@@ -1,8 +1,9 @@
 ---
 import { DateTime } from "luxon";
+import type { CollectionEntry } from "astro:content";
 
 export interface Props {
-    newsItem: any;
+    newsItem: CollectionEntry<"noticias">;
     index: number;
 }
 const { newsItem, index } = Astro.props;
@@ -10,9 +11,11 @@ const { newsItem, index } = Astro.props;
 const timeSince = DateTime.fromJSDate(newsItem.data.pubDate)
     .setLocale("pt-BR")
     .toRelative();
+
+const ANIMATION_DELAY_MS = 100;
 ---
 
-<li class="news-item" style={`animation-delay: ${index * 100}ms;`}>
+<li class="news-item" style={`animation-delay: ${index * ANIMATION_DELAY_MS}ms;`}>
     <article>
         <a href={`/noticias/${newsItem.slug}/`} class="news-link">
             <div class="news-header">

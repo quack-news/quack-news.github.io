@@ -1,0 +1,246 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "./BaseLayout.astro";
+import StarRating from "../components/midia/StarRating.astro";
+import ContentMetadata from "../components/news/ContentMetatada.astro";
+
+const { frontmatter } = Astro.props;
+const { title, image, description, type, rating, platform, duration } =
+    frontmatter;
+---
+
+<BaseLayout pageTitle={title}>
+    <div class="media-hero">
+        <div class="backdrop-container">
+            {
+                image && (
+                    <Image
+                        src={image.src}
+                        alt=""
+                        width={100}
+                        height={100}
+                        class="backdrop-image"
+                    />
+                )
+            }
+            <div class="backdrop-overlay"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="poster-column">
+                <div class="poster-wrapper">
+                    {
+                        image && (
+                            <Image
+                                src={image.src}
+                                alt={image.alt}
+                                width={400}
+                                height={600}
+                                class="main-poster"
+                                loading="eager"
+                            />
+                        )
+                    }
+                    <div class="poster-reflection"></div>
+                </div>
+            </div>
+
+            <div class="info-column">
+                <h1 class="media-title">{title}</h1>
+
+                <div class="quick-stats">
+                    <span class="media-badge">{type}</span>
+
+                    {
+                        rating !== undefined && (
+                            <div class="rating-wrapper">
+                                <StarRating rating={rating} />
+                            </div>
+                        )
+                    }
+
+                    {platform && <span class="stat-pill">{platform}</span>}
+                    {duration && <span class="stat-pill">{duration}</span>}
+                </div>
+
+                <p class="media-dek">{description}</p>
+            </div>
+        </div>
+    </div>
+
+    <article class="review-content">
+        <ContentMetadata {frontmatter} />
+        <div class="prose">
+            <slot />
+        </div>
+    </article>
+</BaseLayout>
+
+<style>
+    .media-hero {
+        position: relative;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-bottom: 3rem;
+        padding: 4rem 1rem;
+        color: white;
+    }
+
+    .backdrop-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+    .backdrop-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(20px) saturate(1.2);
+        transform: scale(1.1);
+    }
+    .backdrop-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), #fff);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        max-width: 1000px;
+        width: 100%;
+        align-items: center;
+    }
+    @media (min-width: 768px) {
+        .hero-content {
+            grid-template-columns: 300px 1fr;
+            text-align: left;
+        }
+    }
+
+    .poster-wrapper {
+        position: relative;
+        border-radius: 12px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        transform: rotate(-3deg);
+        transition: transform 0.3s ease;
+        border: 4px solid #fff;
+    }
+    .poster-wrapper:hover {
+        transform: rotate(0deg) scale(1.02);
+    }
+    .main-poster {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 8px;
+    }
+
+    .info-column {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .media-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        line-height: 1;
+        margin: 0;
+        color: #fff;
+    }
+
+    .quick-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        align-items: center;
+    }
+
+    .media-badge {
+        display: inline-flex;
+        align-items: center;
+        background: #2ee59d; /* Verde Neon */
+        color: #3d3522;
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+        height: 32px; /* Altura fixa para alinhar com os outros */
+    }
+
+    /* Wrapper para as estrelas ficarem na altura certa */
+    .rating-wrapper {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 0.5rem; /* Um pouco de respiro ao redor das estrelas */
+    }
+
+    /* Estilo das Tags (Apple/1 Temp) - Estilo Glassmorphism/Outline */
+    .stat-pill {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.15); /* Mais transparente */
+        backdrop-filter: blur(4px);
+        padding: 0 1rem;
+        border-radius: 20px;
+        font-family: var(--font-sans);
+        font-size: 0.85rem;
+        font-weight: 500;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #eee;
+        height: 32px; /* Altura fixa igual ao badge */
+        white-space: nowrap;
+    }
+
+    .media-dek {
+        font-family: var(--font-text);
+        font-size: 1.2rem;
+        line-height: 1.6;
+        opacity: 0.9;
+        max-width: 60ch;
+        margin-top: 0.5rem;
+    }
+
+    .review-content {
+        max-width: 720px;
+        margin: -4rem auto 0 auto;
+        position: relative;
+        z-index: 2;
+        padding: 0 1.5rem;
+    }
+    .prose {
+        font-family: var(--font-text);
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #333;
+    }
+    .prose :global(h2) {
+        font-family: var(--font-display);
+        color: #3d3522;
+        margin-top: 2rem;
+    }
+    .prose :global(p) {
+        margin-bottom: 1.5rem;
+    }
+    .prose :global(strong) {
+        color: #e52e71;
+    }
+</style>

@@ -1,6 +1,6 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
-import PostLayout from "../../layouts/PostLayout.astro";
+import MediaLayout from "../../layouts/MediaLayout.astro";
 
 export async function getStaticPaths() {
     const mediaEntries = await getCollection(
@@ -21,6 +21,6 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<PostLayout frontmatter={entry.data}>
+<MediaLayout frontmatter={entry.data}>
     <Content />
-</PostLayout>
+</MediaLayout>

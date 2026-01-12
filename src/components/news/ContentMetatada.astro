@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 
 function formatDate(date: Date) {
     return DateTime.fromJSDate(date)
+        .setZone("UTC")
         .setLocale("pt-BR")
         .toLocaleString(DateTime.DATE_FULL);
 }
@@ -26,7 +27,6 @@ const collectionType = (frontmatter as any).category
 <aside class="metadata">
     <div class="info-group">
         <div class="metadata-item author-item">
-            ✍️
             <span>
                 Escrito por <a href={`/autor/${frontmatter.author.id}/`}
                     >{frontmatter.author.id}</a
@@ -34,7 +34,6 @@ const collectionType = (frontmatter as any).category
             </span>
         </div>
         <div class="metadata-item">
-            🗓️
             <time datetime={frontmatter.pubDate.toISOString()}>
                 {formatDate(frontmatter.pubDate)}
             </time>
@@ -76,7 +75,7 @@ const collectionType = (frontmatter as any).category
         gap: 1.5rem;
         padding: 1rem 0;
         margin: 0 auto 2rem auto;
-        max-width: 75ch; /* Mesma largura do artigo para alinhamento */
+        max-width: 75ch;
         border-top: 2px solid #f0f0f0;
         border-bottom: 2px solid #f0f0f0;
         font-family: "Poppins", sans-serif;
@@ -105,7 +104,7 @@ const collectionType = (frontmatter as any).category
 
     .tag-link {
         display: inline-block;
-        background-color: #ffd700; /* Nosso amarelo! */
+        background-color: #ffd700;
         color: #3d3522;
         padding: 0.3rem 0.8rem;
         border-radius: 20px;
@@ -120,6 +119,6 @@ const collectionType = (frontmatter as any).category
     }
     .tag-link:hover {
         transform: translateY(-3px) translateX(-3px);
-        box-shadow: 6px 6px 0px #e52e71; /* Efeito hover divertido! */
+        box-shadow: 6px 6px 0px #e52e71;
     }
 </style>

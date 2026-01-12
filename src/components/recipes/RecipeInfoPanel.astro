@@ -13,7 +13,6 @@ const totalTime = prepTime + cookTime;
 
 <div class="info-panel">
     <div class="info-item">
-        <span class="icon">⏱️</span>
         <span class="label">Tempo Total</span>
         <span class="value">{totalTime} min</span>
         <small>Preparo: {prepTime}m</small>
@@ -21,13 +20,11 @@ const totalTime = prepTime + cookTime;
     </div>
 
     <div class="info-item">
-        <span class="icon">👥</span>
         <span class="label">Rendimento</span>
         <span class="value">{servings} porções</span>
     </div>
 
     <div class="info-item">
-        <span class="icon">⭐</span>
         <span class="label">Dificuldade</span>
         <span class="value">{difficulty}</span>
     </div>
@@ -49,9 +46,7 @@ const totalTime = prepTime + cookTime;
         align-items: center;
         text-align: center;
     }
-    .info-item .icon {
-        font-size: 1.5rem;
-    }
+
     .info-item .label {
         font-size: 0.8rem;
         font-weight: 700;

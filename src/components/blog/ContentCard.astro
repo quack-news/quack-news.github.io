@@ -1,29 +1,47 @@
 ---
 import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
 
 export interface Props {
-    item: any;
+    item:
+        | CollectionEntry<"noticias">
+        | CollectionEntry<"receitas">
+        | CollectionEntry<"midias">
+        | CollectionEntry<"fatos-aleatorios">;
     categoryLabel: string;
     categoryColor?: string;
-    index?: number; 
+    index?: number;
 }
-const { item, categoryLabel, categoryColor = "#ff8a00", index = 0 } = Astro.props;
+
+const {
+    item,
+    categoryLabel,
+    categoryColor = "#ff8a00",
+    index = 0,
+} = Astro.props;
 
 const url = `/${item.collection}/${item.slug}/`;
+
+const loadingStrategy = index < 1 ? "eager" : "lazy";
+
+const cardImage = "image" in item.data ? item.data.image : undefined;
+const cardDescription =
+    "description" in item.data ? item.data.description : undefined;
 ---
 
 <a href={url} class="content-card">
     <div class="card-image-container">
         {
-            item.data.image && (
+            cardImage && (
                 <Image
-                    src={item.data.image.src}
-                    alt={item.data.image.alt || item.data.title}
+                    src={cardImage.src}
+                    alt={cardImage.alt || item.data.title}
                     width={400}
                     height={250}
                     class="card-image"
-                    loading={index === 0 ? "eager" : "lazy"}
-                />                
+                    loading={loadingStrategy}
+                    decoding={loadingStrategy === "eager" ? "sync" : "async"}
+                />
             )
         }
     </div>
@@ -32,7 +50,7 @@ const url = `/${item.collection}/${item.slug}/`;
             >{categoryLabel}</span
         >
         <h3 class="card-title">{item.data.title}</h3>
-        <p class="card-description">{item.data.description}</p>
+        <p class="card-description">{cardDescription}</p>
     </div>
 </a>
 

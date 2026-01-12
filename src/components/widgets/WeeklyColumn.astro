@@ -1,43 +1,32 @@
 ---
 import { Aside } from "../widgets";
+import { getCollection } from "astro:content";
 
-export interface Previsao {
+export interface Prediction {
     nome: string;
     texto: string;
 }
 
-const {
-    previsoes = [
-        {
-            nome: "Bernardo",
-            texto: "Sua criatividade estará em alta. É um ótimo momento para iniciar projetos pessoais.",
-        },
-        {
-            nome: "Eloa",
-            texto: "Boas notícias no campo profissional podem surgir quando você menos esperar.",
-        },
-        {
-            nome: "Fauzi",
-            texto: "Uma energia de renovação trará clareza para decisões importantes.",
-        },
-        {
-            nome: "Gabe",
-            texto: "A comunicação estará favorecida. Excelente semana para diálogos e acordos.",
-        },
-        {
-            nome: "Guilherme",
-            texto: "Foque na sua intuição, ela será sua melhor guia nos próximos dias.",
-        },
-        {
-            nome: "Laura",
-            texto: "Um encontro inesperado pode se transformar em uma forte amizade.",
-        },
-        {
-            nome: "Yuka",
-            texto: "Momentos de introspecção trarão respostas que você busca há tempos.",
-        },
-    ],
-}: { previsoes?: Previsao[] } = Astro.props;
+const allPredictions = await getCollection("previsoes");
+
+const sortedPredictions = allPredictions.sort((a, b) =>
+    b.id.localeCompare(a.id),
+);
+
+const latestEntry = sortedPredictions[0];
+
+const currentPredictions: Prediction[] = latestEntry ? latestEntry.data : [];
+
+let formattedDate = "";
+if (latestEntry) {
+    const match = latestEntry.id.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (match) {
+        const [, year, month, day] = match;
+        formattedDate = `${day}/${month}/${year}`;
+    } else {
+        formattedDate = latestEntry.id;
+    }
+}
 ---
 
 <div class="weekly-predictions">
@@ -56,28 +45,32 @@ const {
                     <span class="sakura">❀</span>
                 </p>
             </blockquote>
-            <figcaption>— Patinhas</figcaption>
+            <figcaption>— Patinhas ({formattedDate})</figcaption>
         </figure>
 
-        <dl class="previsoes-lista">
-            {
-                previsoes.map(({ nome, texto }) => (
-                    <div class="previsao-item">
-                        <dt>
-                            <span class="mystic-symbol yin-yang">☯</span>
-                            {nome}
-                        </dt>
-                        <dd>{texto}</dd>
-                    </div>
-                ))
-            }
-        </dl>
+        {
+            currentPredictions.length > 0 ? (
+                <dl class="previsoes-lista">
+                    {currentPredictions.map(({ nome, texto }) => (
+                        <div class="previsao-item">
+                            <dt>
+                                <span class="mystic-symbol yin-yang">☯</span>
+                                {nome}
+                            </dt>
+                            <dd>{texto}</dd>
+                        </div>
+                    ))}
+                </dl>
+            ) : (
+                <p class="no-predictions">
+                    Os astros estão silenciosos esta semana...
+                </p>
+            )
+        }
     </Aside>
 </div>
 
 <style>
-    @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap");
-
     .weekly-predictions {
         --cor-ouro: #d4af37;
         --cor-ouro-claro: #e0c68d;
@@ -112,10 +105,8 @@ const {
     .quote-container {
         background: var(--cor-fundo-card);
         border: 1.5px solid transparent;
-        background-image: linear-gradient(
-                var(--cor-fundo-card),
-                var(--cor-fundo-card)
-            ),
+        background-image:
+            linear-gradient(var(--cor-fundo-card), var(--cor-fundo-card)),
             repeating-linear-gradient(
                 -45deg,
                 var(--cor-ouro-claro),
@@ -232,6 +223,13 @@ const {
         margin: 0;
         color: var(--cor-ouro-texto);
         font-size: 0.8em;
+    }
+
+    .no-predictions {
+        text-align: center;
+        color: var(--cor-ouro-texto);
+        font-style: italic;
+        padding: 1rem;
     }
 
     @keyframes shimmer {

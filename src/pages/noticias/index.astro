@@ -21,7 +21,7 @@ const news = (await getCollection("noticias", ({ data }) => !data.draft)).sort(
                     item={singleNews}
                     categoryLabel="Notícia"
                     categoryColor="#e52e71"
-                    index={index + 1}
+                    index={index}
                 />
             ))
         }

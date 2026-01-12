@@ -1,9 +1,7 @@
 ---
 title: "Polvos têm três corações. Dois bombeiam sangue para as guelras, enquanto o terceiro e maior bombeia para o resto do corpo."
 pubDate: 2025-09-10
-image:
-    src: "polvo.jpg"
-    alt: "Um polvo nadando graciosamente no oceano."
+source: "https://umsoplaneta.globo.com/biodiversidade/noticia/2024/03/19/de-sangue-azul-a-tres-coracoes-5-curiosidades-sobre-o-polvo.ghtml"
 tags: ["animais", "oceano", "biologia"]
 draft: false
 ---
