@@ -1,0 +1,36 @@
+name: Deploy to GitHub Pages
+
+on:
+  # Dispara o workflow a cada push na branch main
+  push:
+    branches: [ main ]
+  # Permite rodar manualmente na aba Actions
+  workflow_dispatch:
+
+# Permissões necessárias para o deploy
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository using git
+        uses: actions/checkout@v4
+      
+      - name: Install, build, and upload your site
+        uses: withastro/action@v3
+        # O action detecta automaticamente pnpm/npm/yarn baseado no lockfile
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
