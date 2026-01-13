@@ -20,7 +20,7 @@ collections:
       - {label: "Título", name: "title", widget: "string"}
       - {label: "Descrição", name: "description", widget: "text"}
       - {label: "Data de Publicação", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false}
-      - {label: "Autor", name: "author", widget: "relation", collection: "autores", value_field: "name", search_fields: ["name"], display_fields: ["name"]}
+      - {label: "Autor", name: "author", widget: "relation", collection: "autores", value_field: "username", search_fields: ["name"], display_fields: ["name"]}
       - {label: "Categoria", name: "category", widget: "string", default: "notícia"}
       - {label: "Tags", name: "tags", widget: "list", default: ["Geral"]}
       - label: "Imagem de Capa"
@@ -43,7 +43,7 @@ collections:
       - {label: "Título", name: "title", widget: "string"}
       - {label: "Descrição", name: "description", widget: "text"}
       - {label: "Data de Publicação", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false}
-      - {label: "Autor", name: "author", widget: "relation", collection: "autores", value_field: "name", search_fields: ["name"], display_fields: ["name"]}
+      - {label: "Autor", name: "author", widget: "relation", collection: "autores", value_field: "username", search_fields: ["name"], display_fields: ["name"]}
       - label: "Imagem"
         name: "image"
         widget: "object"
@@ -81,7 +81,7 @@ collections:
       - {label: "Título", name: "title", widget: "string"}
       - {label: "Descrição", name: "description", widget: "text"}
       - {label: "Data de Publicação", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false}
-      - {label: "Autor", name: "author", widget: "relation", collection: "autores", value_field: "name", search_fields: ["name"], display_fields: ["name"]}
+      - {label: "Autor", name: "author", widget: "relation", collection: "autores", value_field: "username", search_fields: ["name"], display_fields: ["name"]}
       - label: "Imagem"
         name: "image"
         widget: "object"
@@ -139,6 +139,7 @@ collections:
     media_folder: "avatars"
     public_folder: "./avatars"
     fields:
+      - {label: "ID (username)", name: "username", widget: "string", pattern: ['^[a-z0-9]+$', "Apenas letras minúsculas e números"]}
       - {label: "Nome", name: "name", widget: "string"}
       - {label: "Avatar", name: "avatar", widget: "image"}
       - {label: "Biografia", name: "bio", widget: "text"}

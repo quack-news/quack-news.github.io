@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { ContentCard, SectionHeader } from "../../components/blog";
+import { CATEGORY_MAP } from "../../consts";
 
 export async function getStaticPaths() {
     const allAuthors = await getCollection("autores");
@@ -28,12 +29,6 @@ const allPosts = [...allNews, ...allMedia, ...allRecipes];
 const authorPosts = allPosts.filter(
     (post) => post.data.author.id === author.id,
 );
-
-const categoryMap = {
-    noticias: { label: "Notícia", color: "#e52e71" },
-    receitas: { label: "Receita", color: "#2e9de5" },
-    midias: { label: "Mídia", color: "#2ee59d" },
-};
 ---
 
 <BaseLayout pageTitle={`Posts de ${name}`}>
@@ -82,8 +77,8 @@ const categoryMap = {
                 authorPosts.map((post) => (
                     <ContentCard
                         item={post}
-                        categoryLabel={categoryMap[post.collection].label}
-                        categoryColor={categoryMap[post.collection].color}
+                        categoryLabel={CATEGORY_MAP[post.collection].label}
+                        categoryColor={CATEGORY_MAP[post.collection].color}
                     />
                 ))
             )

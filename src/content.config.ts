@@ -104,6 +104,7 @@ const autores = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
+      username: z.string(),
       avatar: image(),
       bio: z.string(),
       socials: z
