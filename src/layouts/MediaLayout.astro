@@ -9,7 +9,7 @@ const { title, image, description, type, rating, platform, duration } =
     frontmatter;
 ---
 
-<BaseLayout pageTitle={title}>
+<BaseLayout {frontmatter}>
     <div class="media-hero">
         <div class="backdrop-container">
             {

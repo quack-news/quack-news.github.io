@@ -7,7 +7,7 @@ const { title, image, prepTime, cookTime, servings, difficulty, ingredients } =
     frontmatter;
 ---
 
-<BaseLayout pageTitle={title}>
+<BaseLayout {frontmatter}>
     <article class="recipe-page">
         <header class="recipe-header">
             <h1>{title}</h1>

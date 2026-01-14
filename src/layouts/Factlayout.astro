@@ -1,50 +1,91 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "./BaseLayout.astro";
 
 const { frontmatter } = Astro.props;
 ---
 
-<BaseLayout pageTitle={"Fato Aleatório!"}>
-    <div class="fact-container">
-        <h1 class="fact-title">{frontmatter.title}</h1>
-        {
-            frontmatter.source && (
-                <a
-                    href={frontmatter.source}
-                    target="_blank"
-                    class="fact-source"
-                >
-                    Ver Fonte
-                </a>
-            )
-        }
-    </div>
+<BaseLayout {frontmatter}>
+  <div class="fact-container">
+    {
+      frontmatter.image && (
+        <div class="fact-image-wrapper">
+          <Image
+            src={frontmatter.image.src}
+            alt={frontmatter.image.alt}
+            width={600}
+            height={400}
+            class="fact-image"
+          />
+        </div>
+      )
+    }
+    <h1 class="fact-title">{frontmatter.title}</h1>
+    {frontmatter.description && <p class="fact-description">{frontmatter.description}</p>}
+    {
+      frontmatter.source && (
+        <a href={frontmatter.source} target="_blank" class="fact-source">
+          Ver Fonte
+        </a>
+      )
+    }
+  </div>
 </BaseLayout>
 
 <style>
-    .fact-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 60vh;
-        text-align: center;
-        padding: 2rem;
+  .fact-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .fact-image-wrapper {
+    margin-bottom: 2rem;
+    animation: fadeIn 1s ease-out;
+  }
+  .fact-image {
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 3px solid #3d3522;
+  }
+  .fact-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: #fff;
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+    box-shadow: 12px 12px 0px #3d3522;
+    transform: rotate(-2deg);
+    line-height: 1.2;
+  }
+  .fact-description {
+    font-family: var(--font-text);
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 2rem;
+    line-height: 1.6;
+  }
+  .fact-source {
+    margin-top: 2rem;
+    font-family: var(--font-text);
+    font-weight: bold;
+    color: #3d3522;
+    text-decoration: underline;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
     }
-    .fact-title {
-        font-family: var(--font-display);
-        font-size: clamp(2rem, 8vw, 4rem);
-        color: #fff;
-        background: linear-gradient(90deg, #ff8a00, #e52e71);
-        padding: 2rem;
-        border-radius: 20px;
-        box-shadow: 12px 12px 0px #3d3522;
-        transform: rotate(-3deg);
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .fact-source {
-        margin-top: 2rem;
-        font-family: var(--font-text);
-        font-weight: bold;
-        color: #3d3522;
-    }
+  }
 </style>

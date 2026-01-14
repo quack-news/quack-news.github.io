@@ -80,6 +80,13 @@ const fatosAleatorios = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string().max(200, "O fato deve ter no máximo 200 caracteres"),
+      description: z.string().optional(),
+      image: z
+        .object({
+          src: image(),
+          alt: z.string(),
+        })
+        .optional(),
       pubDate: z.coerce.date(),
       source: z.string().url(),
       tags: z.array(z.string()),
