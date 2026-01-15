@@ -1,12 +1,14 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, SITE_COLOR } from "../../consts";
-import templateImage from "../../assets/template.png";
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_COLOR } from '../../consts';
+import templateImage from '../../assets/template.png';
 
 export interface Props {
   title?: string;
   description?: string;
-  image?: string | { src: string };
-  type?: "website" | "article";
+  image?:
+    | string
+    | { src: string; width?: number; height?: number; format?: string };
+  type?: 'website' | 'article';
   publishDate?: Date;
   author?: string;
   category?: string;
@@ -17,14 +19,21 @@ const {
   title = SITE_TITLE,
   description = SITE_DESCRIPTION,
   image = templateImage,
-  type = "website",
+  type = 'website',
   publishDate,
   author,
   category,
   tags,
 } = Astro.props;
 
-const imageSrc = typeof image === "object" ? image.src : image;
+const imageSrc = typeof image === 'string' ? image : image.src;
+const imageWidth = typeof image !== 'string' ? image.width : undefined;
+const imageHeight = typeof image !== 'string' ? image.height : undefined;
+const imageType =
+  typeof image !== 'string' && image.format
+    ? `image/${image.format}`
+    : undefined;
+
 const imageUrl = new URL(imageSrc, Astro.url.origin);
 ---
 
@@ -37,9 +46,9 @@ const imageUrl = new URL(imageSrc, Astro.url.origin);
   <meta name="title" content={title} />
   <meta name="description" content={description} />
   <link rel="canonical" href={Astro.url.href} />
-
   <meta name="robots" content="index, follow" />
 
+  {/* Open Graph / Facebook / WhatsApp */}
   <meta property="og:type" content={type} />
   <meta property="og:url" content={Astro.url.href} />
   <meta property="og:title" content={title} />
@@ -52,7 +61,19 @@ const imageUrl = new URL(imageSrc, Astro.url.origin);
   <meta property="og:site_name" content={SITE_TITLE} />
 
   {
-    type === "article" && (
+    imageWidth && (
+      <meta property="og:image:width" content={String(imageWidth)} />
+    )
+  }
+  {
+    imageHeight && (
+      <meta property="og:image:height" content={String(imageHeight)} />
+    )
+  }
+  {imageType && <meta property="og:image:type" content={imageType} />}
+
+  {
+    type === 'article' && (
       <>
         {publishDate && (
           <meta
@@ -68,6 +89,7 @@ const imageUrl = new URL(imageSrc, Astro.url.origin);
     )
   }
 
+  {/* Twitter */}
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content={Astro.url.href} />
   <meta property="twitter:title" content={title} />
@@ -78,11 +100,10 @@ const imageUrl = new URL(imageSrc, Astro.url.origin);
     content={`Imagem de destaque para "${title}"`}
   />
 
+  {/* Favicons e Fontes */}
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
   <meta name="theme-color" content={SITE_COLOR} />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link

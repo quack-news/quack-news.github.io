@@ -4,5 +4,6 @@ description: "Descubra o fascinante sistema circulatório dos cefalópodes e com
 pubDate: 2025-09-10
 source: "https://umsoplaneta.globo.com/biodiversidade/noticia/2024/03/19/de-sangue-azul-a-tres-coracoes-5-curiosidades-sobre-o-polvo.ghtml"
 tags: ["animais", "oceano", "biologia"]
+author: "gabe"
 draft: false
 ---
