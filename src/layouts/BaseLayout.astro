@@ -1,62 +1,61 @@
 ---
-import "../styles/normalize.css";
-import "../styles/global.css";
+import '../styles/normalize.css';
+import '../styles/global.css';
+import { getEntry } from 'astro:content';
 
-import { Head, Header, Footer } from "../components/layout";
-import { WeeklyColumn } from "../components/widgets";
-import { NewsColumn } from "../components/news";
-import type { CollectionEntry } from "astro:content";
+import { Head, Header, Footer } from '../components/layout';
+import { WeeklyColumn } from '../components/widgets';
+import { NewsColumn } from '../components/news';
+import type { CollectionEntry } from 'astro:content';
 
-type ContentData =
-  | CollectionEntry<"noticias">["data"]
-  | CollectionEntry<"receitas">["data"]
-  | CollectionEntry<"midias">["data"]
-  | CollectionEntry<"fatos-aleatorios">["data"];
+type SupportedCollection =
+  | 'noticias'
+  | 'receitas'
+  | 'midias'
+  | 'fatos-aleatorios';
+type ContentData = CollectionEntry<SupportedCollection>['data'];
 
 interface Props {
   title?: string;
   description?: string;
   image?: any;
   frontmatter?: ContentData;
+  type?: 'website' | 'article';
 }
 
-const { title, description, image, frontmatter } = Astro.props;
+const { title, description, image, frontmatter, type: propType } = Astro.props;
 
-const getFrontmatterProp = <K extends keyof any>(
-  data: ContentData | undefined,
-  key: K,
-): any => {
-  if (data && key in data) {
-    return (data as any)[key];
+let authorName: string | undefined = undefined;
+
+if (frontmatter?.author) {
+  const authorEntry = await getEntry(frontmatter.author);
+  if (authorEntry) {
+    authorName = authorEntry.data.name;
   }
-  return undefined;
-};
+}
 
-const headTitle = title || getFrontmatterProp(frontmatter, "title");
-const headDescription =
-  description || getFrontmatterProp(frontmatter, "description");
-const headImage = image || getFrontmatterProp(frontmatter, "image");
-const headType = frontmatter ? "article" : "website";
-const headPublishDate = getFrontmatterProp(frontmatter, "pubDate");
+const ogType: 'website' | 'article' = frontmatter
+  ? 'article'
+  : propType || 'website';
 
-const rawAuthor = getFrontmatterProp(frontmatter, "author");
-const headAuthor =
-  typeof rawAuthor === "object" && "id" in rawAuthor ? rawAuthor.id : rawAuthor;
+const category =
+  frontmatter && 'category' in frontmatter ? frontmatter.category : undefined;
+const imageForHead = frontmatter?.image?.src ?? image;
 
-const headTags = getFrontmatterProp(frontmatter, "tags");
-const headCategory = getFrontmatterProp(frontmatter, "category");
+const finalTitle = frontmatter?.title ?? title ?? 'Quack News';
+const finalDesc = frontmatter?.description ?? description;
 ---
 
 <html lang="pt-br">
   <Head
-    title={headTitle}
-    description={headDescription}
-    image={headImage}
-    type={headType}
-    publishDate={headPublishDate}
-    author={headAuthor}
-    tags={headTags}
-    category={headCategory}
+    title={finalTitle}
+    description={finalDesc}
+    image={imageForHead}
+    type={ogType}
+    publishDate={frontmatter?.pubDate}
+    author={authorName}
+    tags={frontmatter?.tags}
+    category={category}
   />
 
   <body>
@@ -69,7 +68,6 @@ const headCategory = getFrontmatterProp(frontmatter, "category");
         <WeeklyColumn />
         <NewsColumn />
       </div>
-
       <Footer />
     </div>
   </body>

@@ -1,36 +1,36 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
 
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
-import { SectionHeader, ContentCard } from "../../components/blog";
+import { SectionHeader, ContentCard } from '../../components/blog';
 
-const media = (await getCollection("midias", ({ data }) => !data.draft)).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+const media = (await getCollection('midias', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
-<BaseLayout pageTitle="Filmes, Séries e curtas">
-    <SectionHeader title="Filmes, Séries e curtas!" />
+<BaseLayout title="Filmes, Séries e curtas">
+  <SectionHeader title="Filmes, Séries e curtas!" />
 
-    <section class="content-gallery">
-        {media.length === 0 && <p>Nenhum conteúdo de mídia encontrado.</p>}
-        {
-            media.map((mediaItem) => (
-                <ContentCard
-                    item={mediaItem}
-                    categoryLabel={mediaItem.data.type}
-                    categoryColor="#2ee59d"
-                />
-            ))
-        }
-    </section>
+  <section class="content-gallery">
+    {media.length === 0 && <p>Nenhum conteúdo de mídia encontrado.</p>}
+    {
+      media.map((mediaItem) => (
+        <ContentCard
+          item={mediaItem}
+          categoryLabel={mediaItem.data.type}
+          categoryColor="#2ee59d"
+        />
+      ))
+    }
+  </section>
 </BaseLayout>
 
 <style>
-    .content-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-    }
+  .content-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
 </style>
