@@ -1,270 +1,264 @@
 ---
-import { Aside } from "../widgets";
-import { getCollection } from "astro:content";
+import { Aside } from '../widgets';
+import { getCollection } from 'astro:content';
 
 export interface Prediction {
-    nome: string;
-    texto: string;
+  nome: string;
+  texto: string;
 }
 
-const allPredictions = await getCollection("previsoes");
+const allPredictions = await getCollection('previsoes');
 
 const sortedPredictions = allPredictions.sort((a, b) =>
-    b.id.localeCompare(a.id),
+  b.id.localeCompare(a.id)
 );
 
 const latestEntry = sortedPredictions[0];
 
 const currentPredictions: Prediction[] = latestEntry
-    ? latestEntry.data.forecasts
-    : [];
+  ? latestEntry.data.forecasts
+  : [];
 
-let formattedDate = "";
+let formattedDate = '';
 if (latestEntry) {
-    const match = latestEntry.id.match(/^(\d{4})-(\d{2})-(\d{2})/);
-    if (match) {
-        const [, year, month, day] = match;
-        formattedDate = `${day}/${month}/${year}`;
-    } else {
-        formattedDate = latestEntry.id;
-    }
+  const match = latestEntry.id.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (match) {
+    const [, year, month, day] = match;
+    formattedDate = `${day}/${month}/${year}`;
+  } else {
+    formattedDate = latestEntry.id;
+  }
 }
 ---
 
 <div class="weekly-predictions">
-    <Aside direction="left">
-        <header class="column-head">
-            <span class="mystic-symbol">✦</span>
-            <h2>Previsão da Yuka</h2>
-            <span class="mystic-symbol">✦</span>
-        </header>
+  <Aside direction="left">
+    <header class="column-head">
+      <span class="mystic-symbol">✦</span>
+      <h2>Previsão da Yuka</h2>
+      <span class="mystic-symbol">✦</span>
+    </header>
 
-        <figure class="quote-container">
-            <blockquote>
-                <p>
-                    <span class="sakura">❀</span>
-                    “Nossos patinhas, descubra nesse instante, sua sorte oculta”
-                    <span class="sakura">❀</span>
-                </p>
-            </blockquote>
-            <figcaption>— Patinhas ({formattedDate})</figcaption>
-        </figure>
+    <figure class="quote-container">
+      <blockquote>
+        <p>
+          <span class="sakura">❀</span>
+          “Nossos patinhas, descubra nesse instante, sua sorte oculta”
+          <span class="sakura">❀</span>
+        </p>
+      </blockquote>
+      <figcaption>— Patinhas ({formattedDate})</figcaption>
+    </figure>
 
-        {
-            currentPredictions.length > 0 ? (
-                <dl class="previsoes-lista">
-                    {currentPredictions.map(({ nome, texto }) => (
-                        <div class="previsao-item">
-                            <dt>
-                                <span class="mystic-symbol yin-yang">☯</span>
-                                {nome}
-                            </dt>
-                            <dd>{texto}</dd>
-                        </div>
-                    ))}
-                </dl>
-            ) : (
-                <p class="no-predictions">
-                    Os astros estão silenciosos esta semana...
-                </p>
-            )
-        }
-    </Aside>
+    {
+      currentPredictions.length > 0 ? (
+        <dl class="previsoes-lista">
+          {currentPredictions.map(({ nome, texto }) => (
+            <div class="previsao-item">
+              <dt>
+                <span class="mystic-symbol yin-yang">☯</span>
+                {nome}
+              </dt>
+              <dd>{texto}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : (
+        <p class="no-predictions">Os astros estão silenciosos esta semana...</p>
+      )
+    }
+  </Aside>
 </div>
 
 <style>
-    .weekly-predictions {
-        --cor-ouro: #d4af37;
-        --cor-ouro-claro: #e0c68d;
-        --cor-ouro-texto: #7c5c19;
-        --cor-fundo: #f9f6ef;
-        --cor-fundo-card: #fffbe9;
-        --cor-nome: #b97b5b;
-        --cor-sakura: #e9b6d1;
+  .weekly-predictions {
+    --cor-ouro: #d4af37;
+    --cor-ouro-claro: #e0c68d;
+    --cor-ouro-texto: #7c5c19;
+    --cor-fundo: #f9f6ef;
+    --cor-fundo-card: #fffbe9;
+    --cor-nome: #b97b5b;
+    --cor-sakura: #e9b6d1;
 
-        font-family: "Noto Serif JP", serif;
-    }
+    font-family: 'Noto Serif JP', serif;
+  }
 
-    .column-head {
-        border-top: 2px solid var(--cor-ouro-claro);
-        border-bottom: 2px solid var(--cor-ouro-claro);
-        background: linear-gradient(90deg, var(--cor-fundo) 0%, #f7e6c4 100%);
-        color: var(--cor-ouro-texto);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1em;
-        letter-spacing: 0.05em;
-        padding: 0.5em 0;
-    }
+  .column-head {
+    border-top: 2px solid var(--cor-ouro-claro);
+    border-bottom: 2px solid var(--cor-ouro-claro);
+    background: linear-gradient(90deg, var(--cor-fundo) 0%, #f7e6c4 100%);
+    color: var(--cor-ouro-texto);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    letter-spacing: 0.05em;
+    padding: 0.5em 0;
+  }
 
-    .mystic-symbol {
-        font-size: 1.3em;
-        color: var(--cor-ouro);
-        animation: shimmer 3s infinite linear;
-    }
+  .mystic-symbol {
+    font-size: 1.3em;
+    color: var(--cor-ouro);
+    animation: shimmer 3s infinite linear;
+  }
 
-    .quote-container {
-        background: var(--cor-fundo-card);
-        border: 1.5px solid transparent;
-        background-image:
-            linear-gradient(var(--cor-fundo-card), var(--cor-fundo-card)),
-            repeating-linear-gradient(
-                -45deg,
-                var(--cor-ouro-claro),
-                var(--cor-ouro-claro) 4px,
-                transparent 4px,
-                transparent 8px
-            );
-        background-clip: padding-box, border-box;
-        background-origin: padding-box, border-box;
-        animation: marching-ants 3s linear infinite;
+  .quote-container {
+    background: var(--cor-fundo-card);
+    border: 1.5px solid transparent;
+    background-image:
+      linear-gradient(var(--cor-fundo-card), var(--cor-fundo-card)),
+      repeating-linear-gradient(
+        -45deg,
+        var(--cor-ouro-claro),
+        var(--cor-ouro-claro) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    animation: marching-ants 3s linear infinite;
 
-        border-radius: 12px;
-        margin: 1em 0;
-        padding: 0.6em 1em;
-        box-shadow: 0 2px 8px #e0c68d33;
-        position: relative;
-    }
+    border-radius: 12px;
+    margin: 1em 0;
+    padding: 0.6em 1em;
+    box-shadow: 0 2px 8px #e0c68d33;
+    position: relative;
+  }
 
-    .quote-container blockquote {
-        margin: 0;
-        padding: 0;
-    }
-    .quote-container blockquote p {
-        font-size: 0.8em;
-        color: var(--cor-ouro-texto);
-        font-style: italic;
-        line-height: 1.4;
-    }
+  .quote-container blockquote {
+    margin: 0;
+    padding: 0;
+  }
+  .quote-container blockquote p {
+    font-size: 0.8em;
+    color: var(--cor-ouro-texto);
+    font-style: italic;
+    line-height: 1.4;
+  }
 
-    .sakura {
-        color: var(--cor-sakura);
-        font-size: 1.2em;
-        margin: 0 0.3em;
-        display: inline-block;
-        animation: sakura-float 5s ease-in-out infinite;
-    }
+  .sakura {
+    color: var(--cor-sakura);
+    font-size: 1.2em;
+    margin: 0 0.3em;
+    display: inline-block;
+    animation: sakura-float 5s ease-in-out infinite;
+  }
 
-    .quote-container figcaption {
-        text-align: right;
-        font-size: 0.98em;
-        color: #bfa76a;
-        margin-top: 0.3em;
-    }
+  .quote-container figcaption {
+    text-align: right;
+    font-size: 0.98em;
+    color: #bfa76a;
+    margin-top: 0.3em;
+  }
 
-    .previsoes-lista {
-        margin: 0;
-        padding: 0;
-    }
+  .previsoes-lista {
+    margin: 0;
+    padding: 0;
+  }
 
-    .previsao-item {
-        margin-bottom: 1.2em;
-        background: var(--cor-fundo-card);
-        border-radius: 8px;
-        padding: 0.7em 1em;
-        position: relative;
-        overflow: hidden;
-        transition:
-            transform 0.3s ease-out,
-            box-shadow 0.3s ease-out;
-    }
+  .previsao-item {
+    margin-bottom: 1.2em;
+    background: var(--cor-fundo-card);
+    border-radius: 8px;
+    padding: 0.7em 1em;
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 0.3s ease-out,
+      box-shadow 0.3s ease-out;
+  }
 
-    .previsao-item::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 150px;
-        height: 150px;
-        background: radial-gradient(
-            circle,
-            var(--cor-ouro) 0%,
-            transparent 70%
-        );
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0);
-        transition:
-            opacity 0.5s ease,
-            transform 0.5s ease;
-        z-index: 0;
-    }
+  .previsao-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, var(--cor-ouro) 0%, transparent 70%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease;
+    z-index: 0;
+  }
 
-    .previsao-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px #e0c68d55;
-    }
-    .previsao-item:hover::after {
-        opacity: 0.1;
-        transform: translate(-50%, -50%) scale(2);
-    }
+  .previsao-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px #e0c68d55;
+  }
+  .previsao-item:hover::after {
+    opacity: 0.1;
+    transform: translate(-50%, -50%) scale(2);
+  }
 
-    .previsoes-lista dt,
-    .previsoes-lista dd {
-        position: relative;
-        z-index: 1;
-    }
+  .previsoes-lista dt,
+  .previsoes-lista dd {
+    position: relative;
+    z-index: 1;
+  }
 
-    .previsoes-lista dt {
-        color: var(--cor-nome);
-        font-size: 1.1em;
-        letter-spacing: 0.04em;
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        margin: 0 0 0.2em 0;
-    }
+  .previsoes-lista dt {
+    color: var(--cor-nome);
+    font-size: 1.1em;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0 0 0.2em 0;
+  }
 
-    .yin-yang {
-        display: inline-block;
-        animation: spin 8s linear infinite;
-        font-size: 1em;
-    }
+  .yin-yang {
+    display: inline-block;
+    animation: spin 8s linear infinite;
+    font-size: 1em;
+  }
 
-    .previsoes-lista dd {
-        margin: 0;
-        color: var(--cor-ouro-texto);
-        font-size: 0.8em;
-    }
+  .previsoes-lista dd {
+    margin: 0;
+    color: var(--cor-ouro-texto);
+    font-size: 0.8em;
+  }
 
-    .no-predictions {
-        text-align: center;
-        color: var(--cor-ouro-texto);
-        font-style: italic;
-        padding: 1rem;
-    }
+  .no-predictions {
+    text-align: center;
+    color: var(--cor-ouro-texto);
+    font-style: italic;
+    padding: 1rem;
+  }
 
-    @keyframes shimmer {
-        0%,
-        100% {
-            opacity: 0.7;
-            text-shadow: 0 0 4px var(--cor-ouro);
-        }
-        50% {
-            opacity: 1;
-            text-shadow: 0 0 10px var(--cor-ouro);
-        }
+  @keyframes shimmer {
+    0%,
+    100% {
+      opacity: 0.7;
+      text-shadow: 0 0 4px var(--cor-ouro);
     }
-    @keyframes spin {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
+    50% {
+      opacity: 1;
+      text-shadow: 0 0 10px var(--cor-ouro);
     }
-    @keyframes sakura-float {
-        0%,
-        100% {
-            transform: translateY(0) rotate(0);
-        }
-        50% {
-            transform: translateY(-3px) rotate(5deg);
-        }
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
     }
-    @keyframes marching-ants {
-        to {
-            background-position: 11.31px 0;
-        }
+    to {
+      transform: rotate(360deg);
     }
+  }
+  @keyframes sakura-float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0);
+    }
+    50% {
+      transform: translateY(-3px) rotate(5deg);
+    }
+  }
+  @keyframes marching-ants {
+    to {
+      background-position: 11.31px 0;
+    }
+  }
 </style>

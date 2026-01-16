@@ -1,122 +1,122 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { ContentCard, SectionHeader } from "../../../components/blog";
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { ContentCard, SectionHeader } from '../../../components/blog';
 
 export async function getStaticPaths() {
-    const allMedia = await getCollection("midias", ({ data }) => !data.draft);
+  const allMedia = await getCollection('midias', ({ data }) => !data.draft);
 
-    const uniqueTags = [
-        ...new Set(allMedia.map((item) => item.data.tags).flat()),
-    ];
+  const uniqueTags = [
+    ...new Set(allMedia.map((item) => item.data.tags).flat()),
+  ];
 
-    return uniqueTags.map((tag) => {
-        const filteredMedia = allMedia.filter((item) =>
-            item.data.tags.includes(tag),
-        );
-        return {
-            params: { tag },
-            props: { mediaItems: filteredMedia, allTags: uniqueTags },
-        };
-    });
+  return uniqueTags.map((tag) => {
+    const filteredMedia = allMedia.filter((item) =>
+      item.data.tags.includes(tag)
+    );
+    return {
+      params: { tag },
+      props: { mediaItems: filteredMedia, allTags: uniqueTags },
+    };
+  });
 }
 
 interface Props {
-    mediaItems: CollectionEntry<"midias">[];
-    allTags: string[];
+  mediaItems: CollectionEntry<'midias'>[];
+  allTags: string[];
 }
 
 const { tag } = Astro.params;
 const { mediaItems, allTags } = Astro.props;
 ---
 
-<BaseLayout pageTitle={`Mídias sobre #${tag}`}>
-    <SectionHeader title={`Explorando Mídias: #${tag}`} />
+<BaseLayout title={`Mídias sobre #${tag}`}>
+  <SectionHeader title={`Explorando Mídias: #${tag}`} />
 
-    <nav class="tag-cloud" aria-label="Navegar por outras tags">
-        <p>Ver outras tags:</p>
-        <div class="tags-list">
-            {
-                allTags.map((otherTag) => (
-                    <a
-                        href={`/midias/tags/${otherTag}/`}
-                        class:list={["tag-link", { active: otherTag === tag }]}
-                    >
-                        {otherTag}
-                    </a>
-                ))
-            }
-        </div>
-    </nav>
+  <nav class="tag-cloud" aria-label="Navegar por outras tags">
+    <p>Ver outras tags:</p>
+    <div class="tags-list">
+      {
+        allTags.map((otherTag) => (
+          <a
+            href={`/midias/tags/${otherTag}/`}
+            class:list={['tag-link', { active: otherTag === tag }]}
+          >
+            {otherTag}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
 
-    <section class="content-gallery">
-        {
-            mediaItems.map((item, index) => (
-                <ContentCard
-                    item={item}
-                    categoryLabel="Mídia"
-                    categoryColor="#2ee59d"
-                    index={index}
-                />
-            ))
-        }
-    </section>
+  <section class="content-gallery">
+    {
+      mediaItems.map((item, index) => (
+        <ContentCard
+          item={item}
+          categoryLabel="Mídia"
+          categoryColor="#2ee59d"
+          index={index}
+        />
+      ))
+    }
+  </section>
 </BaseLayout>
 
 <style>
-    .tag-cloud {
-        max-width: 1100px;
-        margin: 0 auto 2rem auto;
-        padding: 1rem;
-        background-color: #f9f6ef;
-        border-radius: 12px;
-    }
+  .tag-cloud {
+    max-width: 1100px;
+    margin: 0 auto 2rem auto;
+    padding: 1rem;
+    background-color: #f9f6ef;
+    border-radius: 12px;
+  }
 
-    .tag-cloud p {
-        font-family: "Poppins", sans-serif;
-        font-weight: 700;
-        margin: 0 0 1rem 0;
-        color: #3d3522;
-    }
+  .tag-cloud p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: #3d3522;
+  }
 
-    .tags-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-    }
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
 
-    .tag-link {
-        display: inline-block;
-        background-color: #fff;
-        color: #3d3522;
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        text-decoration: none;
-        font-family: "Poppins", sans-serif;
-        font-weight: 500;
-        font-size: 0.9rem;
-        border: 2px solid #ddd;
-        transition: all 0.2s ease-out;
-    }
-    .tag-link:hover {
-        transform: translateY(-2px);
-        border-color: #3d3522;
-        background-color: #ffd700;
-    }
+  .tag-link {
+    display: inline-block;
+    background-color: #fff;
+    color: #3d3522;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: 2px solid #ddd;
+    transition: all 0.2s ease-out;
+  }
+  .tag-link:hover {
+    transform: translateY(-2px);
+    border-color: #3d3522;
+    background-color: #ffd700;
+  }
 
-    .tag-link.active {
-        /* Gradiente ajustado para combinar com mídias (verde) se quiser,
+  .tag-link.active {
+    /* Gradiente ajustado para combinar com mídias (verde) se quiser,
            ou manter o padrão da marca */
-        background: linear-gradient(90deg, #2ee59d, #2e9de5);
-        color: #3d3522;
-        border-color: transparent;
-        font-weight: 700;
-    }
+    background: linear-gradient(90deg, #2ee59d, #2e9de5);
+    color: #3d3522;
+    border-color: transparent;
+    font-weight: 700;
+  }
 
-    .content-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-        margin-top: 2rem;
-    }
+  .content-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
 </style>

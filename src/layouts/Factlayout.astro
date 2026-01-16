@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
-import BaseLayout from "./BaseLayout.astro";
+import { Image } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
 
 const { frontmatter } = Astro.props;
 ---
@@ -21,7 +21,11 @@ const { frontmatter } = Astro.props;
       )
     }
     <h1 class="fact-title">{frontmatter.title}</h1>
-    {frontmatter.description && <p class="fact-description">{frontmatter.description}</p>}
+    {
+      frontmatter.description && (
+        <p class="fact-description">{frontmatter.description}</p>
+      )
+    }
     {
       frontmatter.source && (
         <a href={frontmatter.source} target="_blank" class="fact-source">

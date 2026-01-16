@@ -1,12 +1,12 @@
 ---
 interface Props {
-  direction: "left" | "right";
+  direction: 'left' | 'right';
 }
 
 const { direction } = Astro.props;
 ---
 
-<aside class:list={["sidebar-container", `side-${direction}`]}>
+<aside class:list={['sidebar-container', `side-${direction}`]}>
   <slot />
 </aside>
 

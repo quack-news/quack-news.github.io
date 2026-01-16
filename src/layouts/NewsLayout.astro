@@ -1,11 +1,11 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import BaseLayout from "./BaseLayout.astro";
-import { NewsMetadata } from "../components/news";
-import { Image } from "astro:assets";
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import { NewsMetadata } from '../components/news';
+import { Image } from 'astro:assets';
 
-type News = CollectionEntry<"noticias">;
-type Frontmatter = News["data"];
+type News = CollectionEntry<'noticias'>;
+type Frontmatter = News['data'];
 
 interface Props {
   frontmatter: Frontmatter;
@@ -36,8 +36,8 @@ const { title, description, image } = frontmatter;
 </BaseLayout>
 
 <style>
-  @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap");
-  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
   .article-header {
     display: grid;
@@ -85,7 +85,7 @@ const { title, description, image } = frontmatter;
   }
 
   .hero-title {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 800;
     font-size: clamp(2.2rem, 6vw, 3.5rem);
     color: #3d3522;
@@ -95,7 +95,7 @@ const { title, description, image } = frontmatter;
   }
 
   .hero-dek {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.1rem;
     color: #555;
     margin: 1rem 0 0 0;
@@ -103,7 +103,7 @@ const { title, description, image } = frontmatter;
   }
 
   .news-article {
-    font-family: "Inter", sans-serif;
+    font-family: 'Inter', sans-serif;
     text-align: justify;
     line-height: 1.8;
     font-size: 1.1rem;
@@ -114,7 +114,7 @@ const { title, description, image } = frontmatter;
   }
 
   .news-article > :global(p:first-of-type::first-letter) {
-    font-family: "Poppins", sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 800;
     font-size: 4em;
     float: left;

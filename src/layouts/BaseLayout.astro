@@ -1,17 +1,17 @@
 ---
-import "../styles/normalize.css";
-import "../styles/global.css";
+import '../styles/normalize.css';
+import '../styles/global.css';
 
-import { Head, Header, Footer } from "../components/layout";
-import { WeeklyColumn } from "../components/widgets";
-import { NewsColumn } from "../components/news";
-import type { CollectionEntry } from "astro:content";
+import { Head, Header, Footer } from '../components/layout';
+import { WeeklyColumn } from '../components/widgets';
+import { NewsColumn } from '../components/news';
+import type { CollectionEntry } from 'astro:content';
 
 type ContentData =
-  | CollectionEntry<"noticias">["data"]
-  | CollectionEntry<"receitas">["data"]
-  | CollectionEntry<"midias">["data"]
-  | CollectionEntry<"fatos-aleatorios">["data"];
+  | CollectionEntry<'noticias'>['data']
+  | CollectionEntry<'receitas'>['data']
+  | CollectionEntry<'midias'>['data']
+  | CollectionEntry<'fatos-aleatorios'>['data'];
 
 interface Props {
   title?: string;
@@ -24,7 +24,7 @@ const { title, description, image, frontmatter } = Astro.props;
 
 const getFrontmatterProp = <K extends keyof any>(
   data: ContentData | undefined,
-  key: K,
+  key: K
 ): any => {
   if (data && key in data) {
     return (data as any)[key];
@@ -32,19 +32,19 @@ const getFrontmatterProp = <K extends keyof any>(
   return undefined;
 };
 
-const headTitle = title || getFrontmatterProp(frontmatter, "title");
+const headTitle = title || getFrontmatterProp(frontmatter, 'title');
 const headDescription =
-  description || getFrontmatterProp(frontmatter, "description");
-const headImage = image || getFrontmatterProp(frontmatter, "image");
-const headType = frontmatter ? "article" : "website";
-const headPublishDate = getFrontmatterProp(frontmatter, "pubDate");
+  description || getFrontmatterProp(frontmatter, 'description');
+const headImage = image || getFrontmatterProp(frontmatter, 'image');
+const headType = frontmatter ? 'article' : 'website';
+const headPublishDate = getFrontmatterProp(frontmatter, 'pubDate');
 
-const rawAuthor = getFrontmatterProp(frontmatter, "author");
+const rawAuthor = getFrontmatterProp(frontmatter, 'author');
 const headAuthor =
-  typeof rawAuthor === "object" && "id" in rawAuthor ? rawAuthor.id : rawAuthor;
+  typeof rawAuthor === 'object' && 'id' in rawAuthor ? rawAuthor.id : rawAuthor;
 
-const headTags = getFrontmatterProp(frontmatter, "tags");
-const headCategory = getFrontmatterProp(frontmatter, "category");
+const headTags = getFrontmatterProp(frontmatter, 'tags');
+const headCategory = getFrontmatterProp(frontmatter, 'category');
 ---
 
 <html lang="pt-br">

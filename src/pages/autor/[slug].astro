@@ -1,144 +1,144 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
-import { Image } from "astro:assets";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { ContentCard, SectionHeader } from "../../components/blog";
-import { CATEGORY_MAP } from "../../consts";
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ContentCard, SectionHeader } from '../../components/blog';
+import { CATEGORY_MAP } from '../../consts';
 
 export async function getStaticPaths() {
-    const allAuthors = await getCollection("autores");
-    return allAuthors.map((author) => ({
-        params: { slug: author.id },
-        props: { author },
-    }));
+  const allAuthors = await getCollection('autores');
+  return allAuthors.map((author) => ({
+    params: { slug: author.id },
+    props: { author },
+  }));
 }
 
 interface Props {
-    author: CollectionEntry<"autores">;
+  author: CollectionEntry<'autores'>;
 }
 
 const { author } = Astro.props;
 const { name, avatar, bio, socials } = author.data;
 
-const allNews = await getCollection("noticias", ({ data }) => !data.draft);
-const allMedia = await getCollection("midias", ({ data }) => !data.draft);
-const allRecipes = await getCollection("receitas", ({ data }) => !data.draft);
+const allNews = await getCollection('noticias', ({ data }) => !data.draft);
+const allMedia = await getCollection('midias', ({ data }) => !data.draft);
+const allRecipes = await getCollection('receitas', ({ data }) => !data.draft);
 
 const allPosts = [...allNews, ...allMedia, ...allRecipes];
 
 const authorPosts = allPosts.filter(
-    (post) => post.data.author.id === author.id,
+  (post) => post.data.author.id === author.id
 );
 ---
 
-<BaseLayout pageTitle={`Posts de ${name}`}>
-    <section class="author-profile">
-        <Image
-            src={avatar}
-            alt={`Avatar de ${name}`}
-            width={150}
-            height={150}
-            class="author-avatar"
-        />
-        <div class="author-info">
-            <h1>{name}</h1>
-            <p>{bio}</p>
-            {
-                socials && (
-                    <div class="socials">
-                        {socials.twitter && (
-                            <a href={socials.twitter} target="_blank">
-                                Twitter
-                            </a>
-                        )}
-                        {socials.instagram && (
-                            <a href={socials.instagram} target="_blank">
-                                Instagram
-                            </a>
-                        )}
-                        {socials.last_fm && (
-                            <a href={socials.last_fm} target="_blank">
-                                Last.fm
-                            </a>
-                        )}
-                    </div>
-                )
-            }
-        </div>
-    </section>
+<BaseLayout title={`Posts de ${name}`}>
+  <section class="author-profile">
+    <Image
+      src={avatar}
+      alt={`Avatar de ${name}`}
+      width={150}
+      height={150}
+      class="author-avatar"
+    />
+    <div class="author-info">
+      <h1>{name}</h1>
+      <p>{bio}</p>
+      {
+        socials && (
+          <div class="socials">
+            {socials.twitter && (
+              <a href={socials.twitter} target="_blank">
+                Twitter
+              </a>
+            )}
+            {socials.instagram && (
+              <a href={socials.instagram} target="_blank">
+                Instagram
+              </a>
+            )}
+            {socials.last_fm && (
+              <a href={socials.last_fm} target="_blank">
+                Last.fm
+              </a>
+            )}
+          </div>
+        )
+      }
+    </div>
+  </section>
 
-    <SectionHeader title={`Publicações de ${name.split(" ")[0]}`} />
+  <SectionHeader title={`Publicações de ${name.split(' ')[0]}`} />
 
-    <section class="content-gallery">
-        {
-            authorPosts.length === 0 ? (
-                <p>Este autor ainda não publicou nada.</p>
-            ) : (
-                authorPosts.map((post) => (
-                    <ContentCard
-                        item={post}
-                        categoryLabel={CATEGORY_MAP[post.collection].label}
-                        categoryColor={CATEGORY_MAP[post.collection].color}
-                    />
-                ))
-            )
-        }
-    </section>
+  <section class="content-gallery">
+    {
+      authorPosts.length === 0 ? (
+        <p>Este autor ainda não publicou nada.</p>
+      ) : (
+        authorPosts.map((post) => (
+          <ContentCard
+            item={post}
+            categoryLabel={CATEGORY_MAP[post.collection].label}
+            categoryColor={CATEGORY_MAP[post.collection].color}
+          />
+        ))
+      )
+    }
+  </section>
 </BaseLayout>
 
 <style>
+  .author-profile {
+    margin-top: 1.45rem;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 2rem;
+    background-color: #f9f6ef;
+    padding: 2rem;
+    border-radius: 16px;
+    margin-bottom: 3rem;
+  }
+  .author-avatar {
+    border-radius: 50%;
+    border: 4px solid #ffd700;
+    box-shadow: 6px 6px 0px #3d3522;
+  }
+  .author-info h1 {
+    font-family: var(--font-display);
+    margin: 0 0 0.5rem 0;
+  }
+  .author-info p {
+    font-family: var(--font-text);
+    line-height: 1.7;
+    font-size: 1.05rem;
+    margin: 0 0 1rem 0;
+    max-width: 60ch;
+  }
+  .socials {
+    display: flex;
+    gap: 1rem;
+  }
+  .socials a {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #3d3522;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .socials a:hover {
+    color: #e52e71;
+  }
+
+  .content-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  @media (orientation: portrait) {
     .author-profile {
-        margin-top: 1.45rem;
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        gap: 2rem;
-        background-color: #f9f6ef;
-        padding: 2rem;
-        border-radius: 16px;
-        margin-bottom: 3rem;
+      flex-wrap: wrap;
     }
-    .author-avatar {
-        border-radius: 50%;
-        border: 4px solid #ffd700;
-        box-shadow: 6px 6px 0px #3d3522;
-    }
-    .author-info h1 {
-        font-family: var(--font-display);
-        margin: 0 0 0.5rem 0;
-    }
-    .author-info p {
-        font-family: var(--font-text);
-        line-height: 1.7;
-        font-size: 1.05rem;
-        margin: 0 0 1rem 0;
-        max-width: 60ch;
-    }
-    .socials {
-        display: flex;
-        gap: 1rem;
-    }
-    .socials a {
-        font-family: var(--font-sans);
-        font-weight: 700;
-        font-size: 0.9rem;
-        color: #3d3522;
-        text-decoration: none;
-        transition: color 0.2s ease;
-    }
-    .socials a:hover {
-        color: #e52e71;
-    }
-
-    .content-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-    }
-
-    @media (orientation: portrait) {
-        .author-profile {
-            flex-wrap: wrap;
-        }
-    }
+  }
 </style>
