@@ -1,45 +1,46 @@
-// src/content/config.ts
-
 import { defineCollection, reference, z } from 'astro:content';
+
+const authorRef = reference('autores');
+
+const baseSchema = z.object({
+  title: z.string(),
+  pubDate: z.coerce.date(),
+  tags: z.array(z.string()),
+  author: authorRef,
+  draft: z.boolean().optional(),
+  description: z.string().optional(),
+});
+
+const standardImage = (image: any) =>
+  z.object({
+    src: image(),
+    alt: z.string(),
+  });
 
 const noticias = defineCollection({
   type: 'content',
   schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      pubDate: z.coerce.date(),
+    baseSchema.extend({
       description: z.string(),
-      author: reference('autores'),
       updatedDate: z.coerce.date().optional(),
-      image: z.object({
-        src: image(),
-        alt: z.string(),
+      category: z.string(),
+      image: standardImage(image).extend({
         caption: z.string().optional(),
       }),
-      category: z.string(),
-      tags: z.array(z.string()),
-      draft: z.boolean().optional(),
     }),
 });
 
 const receitas = defineCollection({
   type: 'content',
   schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      pubDate: z.coerce.date(),
+    baseSchema.extend({
       description: z.string(),
-      author: reference('autores'),
-      image: z.object({
-        src: image(),
-        alt: z.string(),
-      }),
-      tags: z.array(z.string()),
-      draft: z.boolean().optional(),
+      image: standardImage(image),
 
       prepTime: z.number().describe('Tempo de preparo em minutos'),
       cookTime: z.number().describe('Tempo de cozimento em minutos'),
-      servings: z.number().describe('Número de porções que a receita rende'),
+      servings: z.number().describe('Número de porções'),
+
       difficulty: z.enum(['Fácil', 'Médio', 'Difícil']),
 
       ingredients: z.array(
@@ -55,42 +56,24 @@ const receitas = defineCollection({
 const midias = defineCollection({
   type: 'content',
   schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      pubDate: z.coerce.date(),
+    baseSchema.extend({
       description: z.string(),
-      author: reference('autores'),
-      image: z.object({
-        src: image(),
-        alt: z.string(),
-      }),
-      type: z.enum(['Filme', 'Música', 'Série', 'Análise', 'Jogo']),
-      tags: z.array(z.string()),
+      image: standardImage(image),
 
+      type: z.enum(['Filme', 'Música', 'Série', 'Análise', 'Jogo']),
       rating: z.number().min(0).max(5).optional(),
       platform: z.string().optional(),
       duration: z.string().optional(),
-
-      draft: z.boolean().optional(),
     }),
 });
 
 const fatosAleatorios = defineCollection({
   type: 'content',
   schema: ({ image }) =>
-    z.object({
+    baseSchema.extend({
       title: z.string().max(200, 'O fato deve ter no máximo 200 caracteres'),
-      description: z.string().optional(),
-      image: z
-        .object({
-          src: image(),
-          alt: z.string(),
-        })
-        .optional(),
-      pubDate: z.coerce.date(),
+      image: standardImage(image).optional(),
       source: z.string().url(),
-      tags: z.array(z.string()),
-      draft: z.boolean().optional(),
     }),
 });
 
