@@ -1,23 +1,23 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
 
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BaseLayout from '../../../layouts/BaseLayout.astro';
 
-const allNews = await getCollection("noticias");
+const allNews = await getCollection('noticias');
 
 const uniqueTags = [
-    ...new Set(allNews.map((news: any) => news.data.tags).flat()),
+  ...new Set(allNews.map((news: any) => news.data.tags).flat()),
 ];
 ---
 
 <BaseLayout title="noticias">
-    <ul>
-        {
-            uniqueTags.map((tag) => (
-                <li>
-                    <a href={`noticias/tags/${tag}/`}>{tag}</a>
-                </li>
-            ))
-        }
-    </ul>
+  <ul>
+    {
+      uniqueTags.map((tag) => (
+        <li>
+          <a href={`noticias/tags/${tag}/`}>{tag}</a>
+        </li>
+      ))
+    }
+  </ul>
 </BaseLayout>

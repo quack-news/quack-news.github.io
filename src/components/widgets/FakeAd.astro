@@ -1,10 +1,10 @@
 ---
-import { Image } from "astro:assets";
-import type { ImageMetadata } from "astro";
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
 const images = import.meta.glob<{ default: ImageMetadata }>(
-    "../../assets/fake_ad_*.{jpeg,jpg,png,gif}",
-    { eager: true },
+  '../../assets/fake_ad_*.{jpeg,jpg,png,gif}',
+  { eager: true }
 );
 
 const imageKeys = Object.keys(images);
@@ -16,85 +16,85 @@ const AD_HEIGHT = 200;
 ---
 
 <a href="fake-ad/" class="ad-link">
-    <div class="ad-image-container">
-        <Image
-            src={randomImage}
-            alt="Clique para ver mais fotos de cachorros"
-            width={AD_WIDTH}
-            height={AD_HEIGHT}
-            class="ad-image"
-        />
-    </div>
+  <div class="ad-image-container">
+    <Image
+      src={randomImage}
+      alt="Clique para ver mais fotos de cachorros"
+      width={AD_WIDTH}
+      height={AD_HEIGHT}
+      class="ad-image"
+    />
+  </div>
 
-    <div class="ad-content">
-        <p class="ad-title">
-            Você não vai acreditar no que ele fez com essa técnica.
-        </p>
-    </div>
+  <div class="ad-content">
+    <p class="ad-title">
+      Você não vai acreditar no que ele fez com essa técnica.
+    </p>
+  </div>
 
-    <span class="ad-banner">Ver Mais!</span>
+  <span class="ad-banner">Ver Mais!</span>
 </a>
 
 <style>
-    .ad-link {
-        --ad-bg: #fff;
-        --ad-text: #3d3522;
-        --ad-accent: #ffd700;
-        --ad-shadow: #3d3522;
+  .ad-link {
+    --ad-bg: #fff;
+    --ad-text: #3d3522;
+    --ad-accent: #ffd700;
+    --ad-shadow: #3d3522;
 
-        display: block;
-        position: relative;
-        overflow: hidden;
+    display: block;
+    position: relative;
+    overflow: hidden;
 
-        text-decoration: none;
-        color: var(--ad-text);
+    text-decoration: none;
+    color: var(--ad-text);
 
-        background-color: var(--ad-bg);
+    background-color: var(--ad-bg);
 
-        box-shadow: 6px 6px 0px var(--ad-shadow);
+    box-shadow: 6px 6px 0px var(--ad-shadow);
 
-        transition:
-            transform 0.2s ease-out,
-            box-shadow 0.2s ease-out;
-    }
+    transition:
+      transform 0.2s ease-out,
+      box-shadow 0.2s ease-out;
+  }
 
-    .ad-link:hover {
-        transform: translateY(-6px) translateX(-6px);
-        box-shadow: 12px 12px 0px var(--ad-accent);
-    }
+  .ad-link:hover {
+    transform: translateY(-6px) translateX(-6px);
+    box-shadow: 12px 12px 0px var(--ad-accent);
+  }
 
-    .ad-image-container {
-        overflow: hidden;
-    }
+  .ad-image-container {
+    overflow: hidden;
+  }
 
-    .ad-image {
-        display: block;
-        width: 100%;
-        height: auto;
-        transition: transform 0.4s ease;
-    }
+  .ad-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.4s ease;
+  }
 
-    .ad-link:hover .ad-image {
-        transform: scale(1.1);
-    }
-    .ad-content {
-        padding: 1rem;
-    }
-    .ad-title {
-        font-size: 1.1rem;
-        font-weight: bold;
-        margin: 0;
-    }
-    .ad-banner {
-        position: absolute;
-        bottom: 0.5rem;
-        right: 0.5rem;
-        background: var(--ad-accent);
-        color: var(--ad-text);
-        padding: 0.3em 0.8em;
-        border-radius: 8px;
-        font-size: 0.9em;
-        font-weight: 700;
-        box-shadow: 2px 2px 0px var(--ad-shadow);
-    }
+  .ad-link:hover .ad-image {
+    transform: scale(1.1);
+  }
+  .ad-content {
+    padding: 1rem;
+  }
+  .ad-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  .ad-banner {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    background: var(--ad-accent);
+    color: var(--ad-text);
+    padding: 0.3em 0.8em;
+    border-radius: 8px;
+    font-size: 0.9em;
+    font-weight: 700;
+    box-shadow: 2px 2px 0px var(--ad-shadow);
+  }
 </style>

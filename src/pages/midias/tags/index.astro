@@ -1,68 +1,68 @@
 ---
-import { getCollection } from "astro:content";
-import BaseLayout from "../../../layouts/BaseLayout.astro";
-import SectionHeader from "../../../components/blog/SectionHeader.astro";
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SectionHeader from '../../../components/blog/SectionHeader.astro';
 
-const allMedia = await getCollection("midias", ({ data }) => !data.draft);
+const allMedia = await getCollection('midias', ({ data }) => !data.draft);
 
 const uniqueTags = [...new Set(allMedia.map((item) => item.data.tags).flat())];
 ---
 
-<BaseLayout pageTitle="Tags de Mídia">
-    <SectionHeader title="Navegar Mídias por Tags" />
+<BaseLayout title="Tags de Mídia">
+  <SectionHeader title="Navegar Mídias por Tags" />
 
-    <div class="tag-cloud-container">
-        <p class="instruction">Selecione um tópico para explorar:</p>
-        <div class="tags-list">
-            {
-                uniqueTags.map((tag) => (
-                    <a href={`/midias/tags/${tag}/`} class="tag-link">
-                        {tag}
-                    </a>
-                ))
-            }
-        </div>
+  <div class="tag-cloud-container">
+    <p class="instruction">Selecione um tópico para explorar:</p>
+    <div class="tags-list">
+      {
+        uniqueTags.map((tag) => (
+          <a href={`/midias/tags/${tag}/`} class="tag-link">
+            {tag}
+          </a>
+        ))
+      }
     </div>
+  </div>
 </BaseLayout>
 
 <style>
-    .tag-cloud-container {
-        max-width: 800px;
-        margin: 2rem auto;
-        text-align: center;
-    }
+  .tag-cloud-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    text-align: center;
+  }
 
-    .instruction {
-        font-family: var(--font-text);
-        margin-bottom: 2rem;
-        color: #666;
-    }
+  .instruction {
+    font-family: var(--font-text);
+    margin-bottom: 2rem;
+    color: #666;
+  }
 
-    .tags-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
-    }
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
 
-    .tag-link {
-        display: inline-block;
-        background-color: #fff;
-        color: #3d3522;
-        padding: 0.5rem 1.2rem;
-        border-radius: 25px;
-        text-decoration: none;
-        font-family: "Poppins", sans-serif;
-        font-weight: 500;
-        font-size: 1.1rem;
-        border: 2px solid #3d3522;
-        box-shadow: 4px 4px 0 #3d3522;
-        transition: all 0.2s ease-out;
-    }
+  .tag-link {
+    display: inline-block;
+    background-color: #fff;
+    color: #3d3522;
+    padding: 0.5rem 1.2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1.1rem;
+    border: 2px solid #3d3522;
+    box-shadow: 4px 4px 0 #3d3522;
+    transition: all 0.2s ease-out;
+  }
 
-    .tag-link:hover {
-        transform: translateY(-4px) translateX(-2px);
-        background-color: #2ee59d;
-        box-shadow: 6px 6px 0 #3d3522;
-    }
+  .tag-link:hover {
+    transform: translateY(-4px) translateX(-2px);
+    background-color: #2ee59d;
+    box-shadow: 6px 6px 0 #3d3522;
+  }
 </style>

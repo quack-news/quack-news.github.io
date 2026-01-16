@@ -1,68 +1,68 @@
 ---
-import { getCollection } from "astro:content";
-import IndexLayout from "../layouts/IndexLayout.astro";
-import { SectionHeader, ContentCard, FeaturedCard } from "../components/blog";
-import { CATEGORY_MAP } from "../consts";
+import { getCollection } from 'astro:content';
+import IndexLayout from '../layouts/IndexLayout.astro';
+import { SectionHeader, ContentCard, FeaturedCard } from '../components/blog';
+import { CATEGORY_MAP } from '../consts';
 
-const allNews = await getCollection("noticias", ({ data }) => !data.draft);
-const allRecipes = await getCollection("receitas", ({ data }) => !data.draft);
-const allMedia = await getCollection("midias", ({ data }) => !data.draft);
+const allNews = await getCollection('noticias', ({ data }) => !data.draft);
+const allRecipes = await getCollection('receitas', ({ data }) => !data.draft);
+const allMedia = await getCollection('midias', ({ data }) => !data.draft);
 const allFacts = await getCollection(
-    "fatos-aleatorios",
-    ({ data }) => !data.draft,
+  'fatos-aleatorios',
+  ({ data }) => !data.draft
 );
 
 const allContent = [...allNews, ...allRecipes, ...allMedia, ...allFacts].sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
 const [featuredItem, ...otherItems] = allContent;
 ---
 
 <IndexLayout>
-    {
-        featuredItem && (
-            <section class="featured-section">
-                <SectionHeader title="Destaque da Semana" />
-                <FeaturedCard
-                    item={featuredItem}
-                    categoryLabel={CATEGORY_MAP[featuredItem.collection].label}
-                    categoryColor={CATEGORY_MAP[featuredItem.collection].color}
-                />
-            </section>
-        )
-    }
+  {
+    featuredItem && (
+      <section class="featured-section">
+        <SectionHeader title="Destaque da Semana" />
+        <FeaturedCard
+          item={featuredItem}
+          categoryLabel={CATEGORY_MAP[featuredItem.collection].label}
+          categoryColor={CATEGORY_MAP[featuredItem.collection].color}
+        />
+      </section>
+    )
+  }
 
-    <section>
-        <SectionHeader title="Explore Mais" />
-        <div class="content-gallery">
-            {otherItems.length === 0 && <p>Nenhum conteúdo encontrado.</p>}
-            {
-                otherItems.map((item, i) => (
-                    <ContentCard
-                        item={item}
-                        categoryLabel={CATEGORY_MAP[item.collection].label}
-                        categoryColor={CATEGORY_MAP[item.collection].color}
-                        index={i + 1}
-                    />
-                ))
-            }
-        </div>
-    </section>
+  <section>
+    <SectionHeader title="Explore Mais" />
+    <div class="content-gallery">
+      {otherItems.length === 0 && <p>Nenhum conteúdo encontrado.</p>}
+      {
+        otherItems.map((item, i) => (
+          <ContentCard
+            item={item}
+            categoryLabel={CATEGORY_MAP[item.collection].label}
+            categoryColor={CATEGORY_MAP[item.collection].color}
+            index={i + 1}
+          />
+        ))
+      }
+    </div>
+  </section>
 </IndexLayout>
 
 <style>
-    .featured-section {
-        margin-bottom: 3rem;
-    }
+  .featured-section {
+    margin-bottom: 3rem;
+  }
 
-    .featured-section :global(.content-card) {
-        max-width: 100%;
-    }
+  .featured-section :global(.content-card) {
+    max-width: 100%;
+  }
 
-    .content-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-    }
+  .content-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
 </style>

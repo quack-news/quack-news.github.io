@@ -1,37 +1,37 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection } from 'astro:content';
 
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
-import { SectionHeader, ContentCard } from "../../components/blog";
+import { SectionHeader, ContentCard } from '../../components/blog';
 
-const news = (await getCollection("noticias", ({ data }) => !data.draft)).sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+const news = (await getCollection('noticias', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
-<BaseLayout pageTitle="Todas as Notícias">
-    <SectionHeader title="Todas as Notícias" />
+<BaseLayout title="Todas as Notícias">
+  <SectionHeader title="Todas as Notícias" />
 
-    <section class="content-gallery">
-        {news.length === 0 && <p>Nenhuma notícia encontrada.</p>}
-        {
-            news.map((singleNews, index) => (
-                <ContentCard
-                    item={singleNews}
-                    categoryLabel="Notícia"
-                    categoryColor="#e52e71"
-                    index={index}
-                />
-            ))
-        }
-    </section>
+  <section class="content-gallery">
+    {news.length === 0 && <p>Nenhuma notícia encontrada.</p>}
+    {
+      news.map((singleNews, index) => (
+        <ContentCard
+          item={singleNews}
+          categoryLabel="Notícia"
+          categoryColor="#e52e71"
+          index={index}
+        />
+      ))
+    }
+  </section>
 </BaseLayout>
 
 <style>
-    .content-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-    }
+  .content-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
 </style>

@@ -1,20 +1,17 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import MediaLayout from "../../layouts/MediaLayout.astro";
+import { type CollectionEntry, getCollection } from 'astro:content';
+import MediaLayout from '../../layouts/MediaLayout.astro';
 
 export async function getStaticPaths() {
-    const mediaEntries = await getCollection(
-        "midias",
-        ({ data }) => !data.draft,
-    );
-    return mediaEntries.map((entry) => ({
-        params: { slug: entry.slug },
-        props: { entry },
-    }));
+  const mediaEntries = await getCollection('midias', ({ data }) => !data.draft);
+  return mediaEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
 }
 
 interface Props {
-    entry: CollectionEntry<"midias">;
+  entry: CollectionEntry<'midias'>;
 }
 
 const { entry } = Astro.props;
@@ -22,5 +19,5 @@ const { Content } = await entry.render();
 ---
 
 <MediaLayout frontmatter={entry.data}>
-    <Content />
+  <Content />
 </MediaLayout>

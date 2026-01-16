@@ -1,31 +1,31 @@
 ---
 interface Props {
-    rating: number;
+  rating: number;
 }
 const { rating } = Astro.props;
 const stars = Math.round(rating);
 ---
 
 <div class="rating-container" aria-label={`Nota: ${rating} de 5`}>
-    {
-        Array.from({ length: 5 }).map((_, i) => (
-            <span class={`star ${i < stars ? "filled" : "empty"}`}>★</span>
-        ))
-    }
+  {
+    Array.from({ length: 5 }).map((_, i) => (
+      <span class={`star ${i < stars ? 'filled' : 'empty'}`}>★</span>
+    ))
+  }
 </div>
 
 <style>
-    .rating-container {
-        display: inline-flex;
-        gap: 4px;
-    }
-    .star {
-        font-size: 1.5rem;
-        color: #ddd;
-        text-shadow: 1px 1px 0 #999;
-    }
-    .star.filled {
-        color: #ffd700;
-        text-shadow: 2px 2px 0 #3d3522;
-    }
+  .rating-container {
+    display: inline-flex;
+    gap: 4px;
+  }
+  .star {
+    font-size: 1.5rem;
+    color: #ddd;
+    text-shadow: 1px 1px 0 #999;
+  }
+  .star.filled {
+    color: #ffd700;
+    text-shadow: 2px 2px 0 #3d3522;
+  }
 </style>

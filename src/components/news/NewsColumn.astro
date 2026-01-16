@@ -1,52 +1,52 @@
 ---
-import { getCollection } from "astro:content";
-import { NewsCard } from "../news";
-import { FakeAd } from "../widgets";
+import { getCollection } from 'astro:content';
+import { NewsCard } from '../news';
+import { FakeAd } from '../widgets';
 
-const allNews = (await getCollection("noticias"))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, 5);
+const allNews = (await getCollection('noticias'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
 ---
 
 <aside class="sidebar">
-    <h2>Últimas Notícias</h2>
-    <ul>
-        {
-            allNews.map((newsItem, index) => (
-                <NewsCard newsItem={newsItem} index={index} />
-            ))
-        }
-    </ul>
+  <h2>Últimas Notícias</h2>
+  <ul>
+    {
+      allNews.map((newsItem, index) => (
+        <NewsCard newsItem={newsItem} index={index} />
+      ))
+    }
+  </ul>
 
-    <FakeAd />
+  <FakeAd />
 </aside>
 
 <style>
-    .sidebar {
-        border-left: 2px solid #f0f0f0;
-        padding-left: 1.5rem;
+  .sidebar {
+    border-left: 2px solid #f0f0f0;
+    padding-left: 1.5rem;
 
-        border-top: 4px solid;
-        border-image-slice: 1;
-        border-image-source: linear-gradient(90deg, #ff8a00, #e52e71);
-        border-left: 0;
-        padding-top: 1rem;
-    }
+    border-top: 4px solid;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(90deg, #ff8a00, #e52e71);
+    border-left: 0;
+    padding-top: 1rem;
+  }
 
-    .sidebar h2 {
-        font-family: var(--font-display);
-        font-size: 1.5rem;
-        margin-top: 0;
-        margin-bottom: 1.5rem;
-        color: #3d3522;
-    }
+  .sidebar h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #3d3522;
+  }
 
-    .sidebar ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 </style>

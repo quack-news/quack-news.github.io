@@ -1,120 +1,120 @@
 ---
-import { Image } from "astro:assets";
-import type { CollectionEntry } from "astro:content";
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
 
 export interface Props {
-    item:
-        | CollectionEntry<"noticias">
-        | CollectionEntry<"receitas">
-        | CollectionEntry<"midias">
-        | CollectionEntry<"fatos-aleatorios">;
-    categoryLabel: string;
-    categoryColor?: string;
-    index?: number;
+  item:
+    | CollectionEntry<'noticias'>
+    | CollectionEntry<'receitas'>
+    | CollectionEntry<'midias'>
+    | CollectionEntry<'fatos-aleatorios'>;
+  categoryLabel: string;
+  categoryColor?: string;
+  index?: number;
 }
 
 const {
-    item,
-    categoryLabel,
-    categoryColor = "#ff8a00",
-    index = 0,
+  item,
+  categoryLabel,
+  categoryColor = '#ff8a00',
+  index = 0,
 } = Astro.props;
 
 const url = `/${item.collection}/${item.slug}/`;
 
-const loadingStrategy = index < 1 ? "eager" : "lazy";
+const loadingStrategy = index < 1 ? 'eager' : 'lazy';
 
-const cardImage = "image" in item.data ? item.data.image : undefined;
+const cardImage = 'image' in item.data ? item.data.image : undefined;
 const cardDescription =
-    "description" in item.data ? item.data.description : undefined;
+  'description' in item.data ? item.data.description : undefined;
 ---
 
 <a href={url} class="content-card">
-    <div class="card-image-container">
-        {
-            cardImage && (
-                <Image
-                    src={cardImage.src}
-                    alt={cardImage.alt || item.data.title}
-                    width={400}
-                    height={250}
-                    class="card-image"
-                    loading={loadingStrategy}
-                    decoding={loadingStrategy === "eager" ? "sync" : "async"}
-                />
-            )
-        }
-    </div>
-    <div class="card-content">
-        <span class="category-tag" style={`background-color: ${categoryColor}`}
-            >{categoryLabel}</span
-        >
-        <h3 class="card-title">{item.data.title}</h3>
-        <p class="card-description">{cardDescription}</p>
-    </div>
+  <div class="card-image-container">
+    {
+      cardImage && (
+        <Image
+          src={cardImage.src}
+          alt={cardImage.alt || item.data.title}
+          width={400}
+          height={250}
+          class="card-image"
+          loading={loadingStrategy}
+          decoding={loadingStrategy === 'eager' ? 'sync' : 'async'}
+        />
+      )
+    }
+  </div>
+  <div class="card-content">
+    <span class="category-tag" style={`background-color: ${categoryColor}`}
+      >{categoryLabel}</span
+    >
+    <h3 class="card-title">{item.data.title}</h3>
+    <p class="card-description">{cardDescription}</p>
+  </div>
 </a>
 
 <style>
-    .content-card {
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        overflow: hidden;
-        text-decoration: none;
-        color: #3d3522;
-        background-color: #fff;
-        border-radius: 16px;
-        border: 2px solid #3d3522;
-        box-shadow: 6px 6px 0px #3d3522;
-        transition:
-            transform 0.2s ease-out,
-            box-shadow 0.2s ease-out;
-    }
-    .content-card:hover {
-        transform: translateY(-6px) translateX(-6px);
-        box-shadow: 12px 12px 0px #ffd700;
-    }
-    .card-image-container {
-        overflow: hidden;
-        border-top-left-radius: 14px;
-        border-top-right-radius: 14px;
-    }
-    .card-image {
-        display: block;
-        width: 100%;
-        height: auto;
-        aspect-ratio: 16/10;
-        object-fit: cover;
-        transition: transform 0.4s ease;
-    }
-    .content-card:hover .card-image {
-        transform: scale(1.1);
-    }
-    .card-content {
-        padding: 1rem;
-        flex-grow: 1;
-    }
-    .category-tag {
-        display: inline-block;
-        font-family: var(--font-sans);
-        font-size: 0.7rem;
-        font-weight: 700;
-        color: white;
-        padding: 0.2rem 0.6rem;
-        border-radius: 20px;
-        margin-bottom: 0.5rem;
-        text-transform: uppercase;
-    }
-    .card-title {
-        font-family: var(--font-display);
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin: 0;
-    }
+  .content-card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: #3d3522;
+    background-color: #fff;
+    border-radius: 16px;
+    border: 2px solid #3d3522;
+    box-shadow: 6px 6px 0px #3d3522;
+    transition:
+      transform 0.2s ease-out,
+      box-shadow 0.2s ease-out;
+  }
+  .content-card:hover {
+    transform: translateY(-6px) translateX(-6px);
+    box-shadow: 12px 12px 0px #ffd700;
+  }
+  .card-image-container {
+    overflow: hidden;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+  }
+  .card-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+  .content-card:hover .card-image {
+    transform: scale(1.1);
+  }
+  .card-content {
+    padding: 1rem;
+    flex-grow: 1;
+  }
+  .category-tag {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+  }
 
-    .card-description {
-        font-family: var(--font-text);
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
-    }
+  .card-description {
+    font-family: var(--font-text);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
 </style>
